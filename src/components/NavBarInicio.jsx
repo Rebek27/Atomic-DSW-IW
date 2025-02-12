@@ -11,20 +11,20 @@ const NavbarInicio = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 py-3 border-b border-neutral-700/80 bg-neutral-900/70 backdrop-blur-lg">
+    <nav className="sticky top-0 z-50 py-3 border-b border-neutral-500/50 bg-white/60 backdrop-blur-lg">
       <div className="max-w-7xl mx-auto px-4 relative lg:text-sm">
         <div className="flex justify-between items-center">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
-            <img className="h-10 w-10 mr-2" src={Atomic2} alt="Atomic2" />
-            <span className="text-xl tracking-tight">Atomic</span>
+            <img className="h-14 w-14 mr-2" src={Atomic2} alt="Atomic2" />
+            <span className="text-2xl tracking-tight text-black font-bold">Atomic</span>
           </div>
 
           {/* Menú en pantallas grandes */}
           <ul className="hidden lg:flex ml-14 space-x-12">
             {navItems.map((item, index) => (
               <li key={index}>
-                <a href={item.href} className="hover:text-orange-400">
+                <a href={item.href} className="text-black hover:text-[#4522fe]">
                   {item.label}
                 </a>
               </li>
@@ -33,12 +33,15 @@ const NavbarInicio = () => {
 
           {/* Botones en pantallas grandes */}
           <div className="hidden lg:flex justify-center space-x-6 items-center">
-            <a href="#" className="py-2 px-4 border rounded-lg hover:bg-neutral-800">
+            <a
+              href="#"
+              className="py-2 px-4 border rounded-lg text-black hover:bg-[#d3d7d8]"
+            >
               Iniciar Sesión
             </a>
             <a
               href="#"
-              className="py-2 px-4 rounded-lg bg-orange-600 text-white hover:bg-orange-700"
+              className="py-2 px-4 rounded-lg bg-[#6142ff] text-white hover:bg-[#4d31d7]"
             >
               Crear cuenta
             </a>
@@ -46,7 +49,7 @@ const NavbarInicio = () => {
 
           {/* Botón del menú hamburguesa en móviles */}
           <div className="lg:hidden flex flex-col justify-end">
-            <button onClick={toggleNavbar}>
+            <button onClick={toggleNavbar} className="text-white">
               {mobileDrawerOpen ? <X /> : <Menu />}
             </button>
           </div>
@@ -58,21 +61,24 @@ const NavbarInicio = () => {
             <ul className="space-y-4">
               {navItems.map((item, index) => (
                 <li key={index}>
-                  <a href={item.href} className="text-lg hover:text-orange-400">
+                  <a href={item.href} className="text-white hover:text-[#7c64fc]">
                     {item.label}
                   </a>
                 </li>
               ))}
             </ul>
             <div className="mt-6 flex space-x-4">
-              <a href="#" className="py-2 px-4 border rounded-lg hover:bg-neutral-800">
-                Sign In
+              <a
+                href="#"
+                className="py-2 px-4 border rounded-lg text-white hover:bg-neutral-800"
+              >
+                Iniciar Sesión
               </a>
               <a
                 href="#"
-                className="py-2 px-4 rounded-lg bg-orange-600 text-white hover:bg-orange-700"
+                className="py-2 px-4 border rounded-lg bg-[#7c64fc] text-white hover:bg-[#6b54e8]"
               >
-                Create an account
+                Crear cuenta
               </a>
             </div>
           </div>
