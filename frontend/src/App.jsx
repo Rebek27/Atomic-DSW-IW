@@ -1,8 +1,8 @@
 import { useState, useEffect} from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import NavbarInicio from './components/NavBarInicio'
-import Hero from './components/Hero/Hero'
+import NavbarInicio from './components/inicio/NavBarInicio'
+import Hero from './components/inicio/Hero'
 
 import AOS from "aos";
 import "aos/dist/aos.css";

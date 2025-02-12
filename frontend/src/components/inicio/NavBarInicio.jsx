@@ -1,7 +1,7 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import Atomic2 from "../assets/Logo/AtomicCirculo.png";
-import { navItems } from "../constants";
+import Atomic2 from "../../assets/Logo/AtomicCirculo.png";
+import { navItems } from "./constants";
 
 const NavbarInicio = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
