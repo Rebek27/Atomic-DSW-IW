@@ -28,7 +28,8 @@ const Beneficios = () => {
                   Beneficios de Atomic.
                 </h1>
                 <p className="text-sm text-gray-600 tracking-wide leading-5">
-                ¡Toma el control de tu vida y bienestar en un solo lugar! 
+                Atomic es una aplicación web diseñada para ayudarte a organizar tu vida 
+                mientras cuidas tu salud mental y bienestar.
                   <br />
                 </p>
                 <div className="flex flex-col gap-6 text-black">

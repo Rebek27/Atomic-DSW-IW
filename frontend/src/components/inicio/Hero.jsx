@@ -38,7 +38,7 @@ const Hero = () => {
               data-aos-offset="0"
               className="order-1 sm:order-2"
             >
-              <img src={HeroPng} alt="" className="" />
+              <img src={HeroPng} alt="" className="w-1/1" />
             </div>
           </div>
 
