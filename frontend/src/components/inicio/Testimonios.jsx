@@ -1,8 +1,8 @@
 import { testimonials } from "./constants";
 
-const Testimonios = () => {
+const Testimonios = ({id}) => {
   return (
-    <div className="py-18 sm:py-20 dark:bg-[#f2f2f2] flex justify-center items-center dark:text-black duration-300 overflow-hidden">
+    <div id={id} className="py-18 sm:py-20 dark:bg-[#f2f2f2] flex justify-center items-center dark:text-black duration-300 overflow-hidden">
       <div className="container mx-auto  tracking-wide">
         <h2 className="text-3xl sm:text-2xl lg:text-5xl text-center lg:my-20 font-semibold">
           ¿Qué opinan de Atomic?

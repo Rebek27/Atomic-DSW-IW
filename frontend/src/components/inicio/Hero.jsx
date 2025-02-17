@@ -2,10 +2,10 @@ import React from "react";
 import HeroPng from "../../assets/images/AtomicHero.png"
 import { BiPlayCircle } from "react-icons/bi";
 
-const Hero = () => {
+const Hero = ({id}) => {
   return (
     <>
-      <div className="py-18 sm:py-10 dark:bg-[#f2f2f2] flex justify-center items-centerr dark:text-black duration-300 overflow-hidden">
+      <div id={id} className="py-18 sm:py-10 dark:bg-[#f2f2f2] flex justify-center items-centerr dark:text-black duration-300 overflow-hidden">
         <div className="container min-h-[600px] flex relative">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 place-items-center relative z-8">
           
@@ -18,7 +18,7 @@ const Hero = () => {
                 </span>
               </h1>
               <p data-aos="fade-up" data-aos-delay="300">
-              Una agenda inteligente diseñada para ayudarte a mantener 
+              Una agenda electronica diseñada para ayudarte a mantener 
               un seguimiento detallado de tus hábitos diarios, así como
                para cuidar de tu salud mental de manera integral.
               </p>
