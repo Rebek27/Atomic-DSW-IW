@@ -1,4 +1,4 @@
-import fondo from "../assets/images/IMG_20240727_111754996.jpg";
+import fondo from "../assets/images/FondoLogin.png";
 
 import LoginForm from "../components/loginReg/LoginForm";
 import SingUpForm from "../components/loginReg/SingUpForm";
@@ -16,7 +16,7 @@ export default function Login() {
       <div className="h-[100vh] flex justify-center items-center "
         style={bgStyle}>
         <LoginForm />
-        {/* <SingUpForm/> */}
+        <SingUpForm/>
       </div>
     </>
   );
