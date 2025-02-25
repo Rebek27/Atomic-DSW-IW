@@ -1,15 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css'
-import Login from './pages/Login.jsx'
-import { ThemeProvider } from './context/ThemeContext.jsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";  // Correcto
+import App from './App';
+import "./index.css";
+import "swiper/swiper-bundle.css";
+import "simplebar-react/dist/simplebar.min.css";
+import { ThemeProvider } from './context/ThemeContext.jsx';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+const root = createRoot(document.getElementById('root'));  // createRoot correcto
+root.render(
+  <StrictMode>
     <ThemeProvider>
-    <App />
-    {/* <Login/> */}
+      <App />
+      {/* <Login/> */}
     </ThemeProvider>
-  </React.StrictMode>,
-)
+  </StrictMode>
+);
