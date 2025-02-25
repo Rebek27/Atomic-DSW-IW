@@ -1,5 +1,5 @@
 
-import { Route, BrowserRouter as Router, Routes } from "react-router";
+import { BrowserRouter as Router, Routes, Route } from "react-router";
 import Inicio from './pages/inicio';
 import Home from './pages/Home';
 import AppLayout from './layouts/AppLayout';
@@ -14,7 +14,7 @@ function App() {
      <Routes>
         <Route element={<AppLayout />}>
             <Route index path="/" element = {<Home/>}/>
-        /</Route>
+         </Route>
             <Route path="/login" element = {<Inicio/>}/>
         </Routes>
     </Router>  
