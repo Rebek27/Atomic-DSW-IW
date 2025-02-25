@@ -310,22 +310,22 @@ const AppSidebar = () => {
                 src="src/assets/images/AN.png"
                 alt="Logo"
                 width={190}
-                height={90}
+                height={50}
               />
               <img
                 className="hidden dark:block"
                 src="src/assets/images/AW.png"
                 alt="Logo"
                 width={190}
-                height={90}
+                height={50}
               />
             </>
           ) : (
             <img
               src="src/assets/images/AtomicCirculo.png"
               alt="Logo"
-              width={38}
-              height={38}
+              width={46}
+              height={46}
             />
           )}
         </Link>
