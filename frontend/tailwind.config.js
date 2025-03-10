@@ -24,6 +24,15 @@ module.exports = {
         "theme-sm": ["14px", "20px"],
         "theme-xs": ["12px", "18px"],
       },
+      animation: {
+        rotate: "rotate 10s linear infinite",
+      },
+      keyframes: {
+        rotate: {
+          "0%": { transform: "rotate(0deg) scale(10)" },
+          "100%": { transform: "rotate(-360deg) scale(10)" },
+        },
+      },
       colors: {
         current: "currentColor",
         transparent: "transparent",

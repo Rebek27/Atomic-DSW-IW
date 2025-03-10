@@ -446,28 +446,28 @@ span.flatpickr-weekday,
 .fc-daygrid-event.fc-event-start {
   @apply !ml-3;
 }
-.event-fc-color.fc-bg-success {
+.event-fc-color.fc-bg-verde {
   @apply border-success-50 bg-success-50;
 }
-.event-fc-color.fc-bg-danger {
+.event-fc-color.fc-bg-rojo {
   @apply border-error-50 bg-error-50;
 }
-.event-fc-color.fc-bg-primary {
+.event-fc-color.fc-bg-azul {
   @apply border-brand-50 bg-brand-50;
 }
-.event-fc-color.fc-bg-warning {
+.event-fc-color.fc-bg-amarillo {
   @apply border-orange-50 bg-orange-50;
 }
-.event-fc-color.fc-bg-success .fc-daygrid-event-dot {
+.event-fc-color.fc-bg-verde .fc-daygrid-event-dot {
   @apply bg-success-500;
 }
-.event-fc-color.fc-bg-danger .fc-daygrid-event-dot {
+.event-fc-color.fc-bg-rojo .fc-daygrid-event-dot {
   @apply bg-error-500;
 }
-.event-fc-color.fc-bg-primary .fc-daygrid-event-dot {
+.event-fc-color.fc-bg-azul .fc-daygrid-event-dot {
   @apply bg-brand-500;
 }
-.event-fc-color.fc-bg-warning .fc-daygrid-event-dot {
+.event-fc-color.fc-bg-amarillo .fc-daygrid-event-dot {
   @apply bg-orange-500;
 }
 .fc-direction-ltr .fc-timegrid-slot-label-frame {

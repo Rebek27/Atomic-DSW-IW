@@ -11,7 +11,7 @@ const NavbarInicio = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 py-3 border-b border-neutral-500/50 bg-white/60 backdrop-blur-lg">
+    <nav className="sticky top-0 z-50 py-3 border-b border-neutral-300/40 bg-white/80 backdrop-blur-lg">
       <div className="max-w-7xl mx-auto px-4 relative lg:text-sm">
         <div className="flex justify-between items-center">
           {/* Logo */}
@@ -34,13 +34,13 @@ const NavbarInicio = () => {
           {/* Botones en pantallas grandes */}
           <div className="hidden lg:flex justify-center space-x-6 items-center">
             <a
-              href="#"
+              href="/login"
               className="py-2 px-4 border rounded-lg text-black hover:bg-[#d3d7d8]"
             >
               Iniciar Sesión
             </a>
             <a
-              href="#"
+              href="/singup"
               className="py-2 px-4 rounded-lg bg-[#6142ff] text-white hover:bg-[#4d31d7]"
             >
               Crear cuenta
