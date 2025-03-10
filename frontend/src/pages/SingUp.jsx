@@ -1,9 +1,9 @@
 import fondo from "../assets/images/FondoLogin.png";
 import { HiArrowCircleLeft } from "react-icons/hi";
 
-import LoginForm from "../components/loginReg/LoginForm";
+import SingUpForm from "../components/loginReg/SingUpForm";
 
-export default function Login() {
+export default function SingUp() {
   const bgStyle = {
     backgroundImage: `url(${fondo})`,
     backgroundRepeat: "no-repeat",
@@ -15,10 +15,9 @@ export default function Login() {
     <>
       <div className="h-[100vh] flex justify-center items-center "
         style={bgStyle}>
+        <SingUpForm/>
 
-
-        <LoginForm />
-
+        
         <button
           type="button"
           className="absolute bottom-6 left-6 text-white bg-gradient-to-r from-cyan-500 to-blue-500 
@@ -32,3 +31,4 @@ export default function Login() {
     </>
   );
 }
+  

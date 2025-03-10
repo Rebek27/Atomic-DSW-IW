@@ -22,7 +22,10 @@ const FooterInicio = () => {
           <p>Cambia tu estilo de vida</p>
         </div>
         <div className=" space-y-4">
-          <button className="primary-btn text-[#502dff]">¡Crea tu cuenta aqui!</button>
+          <button className="primary-btn text-[#502dff]">
+              <a href="/singup">
+              ¡Crea tu cuenta aqui!
+               </a></button>
           <div className="flex flex-row justify-center gap-6">
             <FaFacebook />
             <FaTwitter />
