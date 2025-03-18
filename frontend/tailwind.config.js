@@ -1,7 +1,9 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
+const flowbite = require("flowbite-react/tailwind");
+
 //  @type {import('tailwindcss').Config}
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}",flowbite.content(),],
   darkMode: "class",
   theme: {
     fontFamily: {
@@ -194,5 +196,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/forms"), require("autoprefixer")],
+  plugins: [require("@tailwindcss/forms"), require("autoprefixer"), flowbite.plugin()],
 };

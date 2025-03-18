@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { useSidebar } from "../context/SidebarContext";
 import { ThemeToggleButton } from "../components/comunes/ThemeToggleButton";
 // import NotificationDropdown from "../components/header/NotificationDropdown";
-// import UserDropdown from "../components/header/UserDropdown";
+import UserDropdown from "./UserDropdown";
 
 const AppHeader = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
@@ -56,7 +56,7 @@ const AppHeader = () => {
             {/* <ThemeToggleButton /> */}
             {/* <NotificationDropdown /> */}
           </div>
-          {/* <UserDropdown /> */}
+          <UserDropdown />
         </div>
       </div>
     </header>

@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";  // Correcto
+import 'flowbite';
 import App from './App';
 import "./index.css";
 import "swiper/swiper-bundle.css";

@@ -40,7 +40,9 @@ const eventosJsonUrl = 'src/components/modales/Calendario/events.json';
 const MiCalendario = () => {
   const [eventos, setEventos] = useState([]);
   const [esModalAbierto, setEsModalAbierto] = useState(false);
-  const [eventoEditar, setEventoEditar] = useState(null); 
+  const [eventoEditar, setEventoEditar] = useState(null);
+  const [filtro, setFiltro] = useState("todos");
+  const [filtroEtiqueta, setFiltroEtiqueta] = useState("proximos");
 
 
   useEffect(() => {
@@ -52,9 +54,9 @@ const MiCalendario = () => {
           start: dayjs(evento.start).toDate(),
           end: dayjs(evento.end).toDate(),
         }));
-         
-         eventosFormateados.sort((a, b) => a.start - b.start);
-         setEventos(eventosFormateados);
+
+        eventosFormateados.sort((a, b) => a.start - b.start);
+        setEventos(eventosFormateados);
       })
       .catch((error) => {
         console.error("Error al cargar los eventos:", error);
@@ -73,7 +75,7 @@ const MiCalendario = () => {
       evento.id === eventoEditado.id ? eventoEditado : evento
     );
     setEventos(updatedEventos);
-   // BACKEND -------------------
+    // BACKEND -------------------
   };
 
   const manejarEliminarEvento = (id) => {
@@ -96,14 +98,20 @@ const MiCalendario = () => {
 
   const abrirModal = (evento = null) => {
     setEsModalAbierto(true);
-    setEventoEditar(evento); 
+    setEventoEditar(evento);
   };
+
+  // Filtrado de eventos
+  const eventosFiltrados = eventos.filter(evento => {
+    if (filtroEtiqueta !== "todas" && evento.label !== filtroEtiqueta) return false;
+    return true;
+  });
 
 
   return (
-    <div className="flex flex-col rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+    <div className="flex flex-col rounded-2xl border border-gray-300 bg-white dark:border-gray-800 dark:bg-white/[0.20]">
       <div className="w-full p-4 flex justify-between items-center border-b">
-        <h2 className="p-2 text-2xl">Calendario</h2>
+        <h2 className="p-2 text-3xl font-semibold">Calendario</h2>
         <button
           onClick={() => abrirModal()}
           className="bg-[#5764e3] text-white py-2 px-4 rounded-md text-sm"
@@ -117,19 +125,47 @@ const MiCalendario = () => {
       <div className="flex">
         {/*---------------  Lista de eventos a la izquierda  ------------------*/}
         <div className="w-1/4 p-4 border-r">
+          <div className="mb-4">
+            <label className="block font-semibold">Filtrar por:</label>
+            <select
+              className="w-full p-2 border rounded-md"
+              value={filtro}
+              onChange={(e) => setFiltro(e.target.value)}
+            >
+              <option value="proximos">Próximos</option>
+              <option value="pasados">Pasados</option>
+            </select>
+          </div>
+
+          <div className="mb-4">
+            <label className="block font-semibold">Filtrar por etiqueta:</label>
+            <select
+              className="w-full p-2 border rounded-md"
+              value={filtroEtiqueta}
+              onChange={(e) => setFiltroEtiqueta(e.target.value)}
+            >
+              <option value="todas">Todas</option>
+              <option value="importante">Importante</option>
+              <option value="medico">Médico</option>
+              <option value="estudio">Estudio</option>
+              <option value="personal">Personal</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+
           <ul className="space-y-4 max-h-[700px] overflow-y-auto">
-            {eventos.map((evento) => (
+            {eventosFiltrados.map((evento) => (
               <li
                 key={evento.id}
-                className="p-1 border rounded-md shadow-sm cursor-pointer relative" 
+                className="p-1 border rounded-md shadow-sm cursor-pointer relative"
                 onClick={() => manejarEventoClick(evento)}
               >
                 <button
                   onClick={(e) => {
-                    e.stopPropagation(); 
-                    manejarEliminarEvento(evento.id); 
+                    e.stopPropagation();
+                    manejarEliminarEvento(evento.id);
                   }}
-                  className="absolute top-2 right-2 text-red-300 hover:text-red-700 text-xs" 
+                  className="absolute top-2 right-2 text-red-300 hover:text-red-700 text-xs"
                 >
                   <FaTrash />
                 </button>
@@ -207,7 +243,7 @@ const MiCalendario = () => {
                     backgroundColor: etiquetas[event.label],
                     borderRadius: "5px",
                     color: 'white',
-                    fontSize: '0.85rem', 
+                    fontSize: '0.85rem',
                   }
                 };
               }}

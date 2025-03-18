@@ -6,6 +6,7 @@ import AppLayout from './layouts/AppLayout';
 import Login from "./pages/Login";
 import SingUp from "./pages/SingUp";
 import Calendario from "./pages/Calendar";
+import Tareas from "./pages/Tareas";
 import "./index.css";
 
 
@@ -26,6 +27,7 @@ function App() {
               <Route element={<AppLayout />}>
                   <Route index path="/home" element = {<Home/>}/>
                   <Route index path="/calendario" element = {<Calendario/>}/>
+                  <Route index path="/tareas" element = {<Tareas/>}/>
               </Route>
 
         </Routes>
