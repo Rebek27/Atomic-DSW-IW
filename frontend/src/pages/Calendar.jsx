@@ -65,7 +65,7 @@ const MiCalendario = () => {
   const manejarAgregarEvento = (nuevoEvento) => {
     const updatedEventos = [...eventos, nuevoEvento];
     setEventos(updatedEventos);
-    // BACKEND -------------------
+    // BACKEND ------------------- Llamado a api
   };
 
   const manejarEditarEvento = (eventoEditado) => {
@@ -73,7 +73,7 @@ const MiCalendario = () => {
       evento.id === eventoEditado.id ? eventoEditado : evento
     );
     setEventos(updatedEventos);
-   // BACKEND -------------------
+   // BACKEND ------------------- Llamado a api
   };
 
   const manejarEliminarEvento = (id) => {
@@ -81,7 +81,7 @@ const MiCalendario = () => {
     if (confirmacion) {
       const eventosActualizados = eventos.filter(evento => evento.id !== id);
       setEventos(eventosActualizados);
-      // BACKEND -------------------
+      // BACKEND -------------------Llamado a api
     }
   };
 

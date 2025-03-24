@@ -1,23 +1,31 @@
-import { useEffect, useState } from "react";
-import { useAuth } from "../hooks/useAuth";
+import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import { loginRequest } from "../../services/auth/authService";
+import { useNavigate } from "react-router";
+// import { useAuth } from "../hooks/useAuth";
 
 export default function LoginForm() {
+  const { login } = useAuth();
+  const [loading,setLoading] = useState(false);
+  //const [error,setError] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [contrasena, setContrasena] = useState("");
+  const navigate = useNavigate();
 
-  const { login, error, loading } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Correo: ',email);
-    console.log('Contra: ',password);
-    login(email, password);
-    console.log(localStorage.getItem('sToken'));
-  };
+    setLoading(true);
+    try {
+      const res = await loginRequest({ correo, contrasena });
+      login(res.data.token);
+      setLoading(false);
 
-  useEffect(()=>{
-    console.log(error);
-  },[error]);
+      navigate("/home");
+    } catch (err) {
+      alert(err.response?.data.mensaje.output.payload.message);
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -49,8 +57,8 @@ export default function LoginForm() {
                       id="email"
                       name="email"
                       type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      value={correo}
+                      onChange={(e) => setCorreo(e.target.value)}
                       required
                       autoComplete="email"
                       className="block border-1 w-full rounded-md bg-gray-300 px-2 py-0.5 text-base text-gray-900 outline-1 outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-0 focus:outline-indigo-600 sm:text-sm/6"
@@ -70,8 +78,8 @@ export default function LoginForm() {
                       id="password"
                       name="password"
                       type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      value={contrasena}
+                      onChange={(e) => setContrasena(e.target.value)}
                       required
                       autoComplete="current-password"
                       className="block border-1 w-full rounded-md bg-gray-300 px-2 py-0.5 text-base text-gray-900 outline-1 outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-0 focus:outline-indigo-600 sm:text-sm/6"

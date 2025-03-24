@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { UserValues } from "../../helpers/UserValues";
-import { UserRegister } from "../../services/post/UserRegister";
+import { registerRequest } from "../../services/auth/authService";
 import { useNavigate } from "react-router-dom";
 
 export default function SignUpForm() {
@@ -39,14 +38,16 @@ export default function SignUpForm() {
     }
 
     data.edad = calcularEdad(data.edad);
+
     try {
-      const usuario = UserValues(data);
-      await UserRegister(usuario);
-      setMensaje('Se registró el usuario correctamente');
-      //Aqui quisiera redirigir a la pagina de login o algo asi
-      navigate('/login');
-    } catch (error) {
-      setMensaje('Ocurrio un error al registrarse: ', error);
+      const res = await registerRequest(data);
+      setMensaje("Registro exitoso. Por favor revisa tu correo para verificar tu cuenta.");
+      // Opcional: puedes redirigir al login automáticamente
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    } catch (err) {
+      console.error("Error al registrar:", err);
     }
   };
 
