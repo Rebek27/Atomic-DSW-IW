@@ -40,12 +40,12 @@ export default function SignUpForm() {
     data.edad = calcularEdad(data.edad);
 
     try {
-      const res = await registerRequest(data);
+      await registerRequest(data);
       setMensaje("Registro exitoso. Por favor revisa tu correo para verificar tu cuenta.");
       // Opcional: puedes redirigir al login automáticamente
       setTimeout(() => {
         navigate("/login");
-      }, 2000);
+      }, 1500);
     } catch (err) {
       console.error("Error al registrar:", err);
     }

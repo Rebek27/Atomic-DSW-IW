@@ -86,7 +86,7 @@ export default function LoginForm() {
                     />
                   </div>
                   <div className="text-xs/6 mt-0">
-                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-400">
+                    <a href="/olvidaste-contra" className="font-semibold text-indigo-600 hover:text-indigo-400">
                       ¿Olvidaste tu Contraseña?
                     </a>
                   </div>
