@@ -4,19 +4,19 @@ import dayjs from 'dayjs';
 
 const ModalEditarCalendario = ({ eventoEditar, onEditarEvento, cerrarModal }) => {
   const [titulo, setTitulo] = useState(eventoEditar.title);
-  const [inicio, setInicio] = useState(dayjs(eventoEditar.start).format('YYYY-MM-DDTHH:mm'));
-  const [fin, setFin] = useState(dayjs(eventoEditar.end).format('YYYY-MM-DDTHH:mm'));
-  const [etiqueta, setEtiqueta] = useState(eventoEditar.label);
+  const [inicio, setInicio] = useState(dayjs(eventoEditar.fechaInicio).format('YYYY-MM-DDTHH:mm'));
+  const [fin, setFin] = useState(dayjs(eventoEditar.fechaFin).format('YYYY-MM-DDTHH:mm'));
+  const [etiqueta, setEtiqueta] = useState(eventoEditar.etiqueta);
   const [descripcion, setDescripcion] = useState(eventoEditar.descripcion);
 
   const manejarEnvio = (e) => {
     e.preventDefault();
     const evento = {
-      id: eventoEditar.id,
+      id: eventoEditar.idEvento,
       title: titulo,
-      start: dayjs(inicio).toDate(),
-      end: dayjs(fin).toDate(),
-      label: etiqueta,
+      fechaInicio: dayjs(inicio).toDate(),
+      fechaFin: dayjs(fin).toDate(),
+      etiqueta: etiqueta,
       descripcion: descripcion,
     };
 
