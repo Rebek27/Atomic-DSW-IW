@@ -6,6 +6,8 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import ModalCalendario from '../components/modales/Calendario/ModalCalendario';
 import ModalEditarCalendario from '../components/modales/Calendario/ModalEditarCalendario';
 import { FaTrash } from 'react-icons/fa';
+import * as ES from '../services/events/eventServices';
+
 
 //CAMBiar idioma a español
 dayjs.locale('es');
@@ -35,55 +37,98 @@ const messages = {
 };
 
 
-const eventosJsonUrl = 'src/components/modales/Calendario/events.json';
 
 const MiCalendario = () => {
   const [eventos, setEventos] = useState([]);
   const [esModalAbierto, setEsModalAbierto] = useState(false);
   const [eventoEditar, setEventoEditar] = useState(null);
-  const [filtro, setFiltro] = useState("todos");
-  const [filtroEtiqueta, setFiltroEtiqueta] = useState("proximos");
+  const [filtroEtiqueta, setFiltroEtiqueta] = useState("todas");
+  const [filtroTiempo, setFiltroTiempo] = useState("todos");
+
 
 
   useEffect(() => {
-    fetch(eventosJsonUrl)
-      .then((response) => response.json())
-      .then((data) => {
+    async function fetchData() {
+      try {
+        const { data } = await ES.getEventList();
+        console.log('Eventos traídos del back', data);
+
         const eventosFormateados = data.map((evento) => ({
           ...evento,
-          start: dayjs(evento.start).toDate(),
-          end: dayjs(evento.end).toDate(),
+          fechaInicio: dayjs(evento.fechaInicio).toDate(),
+          fechaFin: dayjs(evento.fechaFin).toDate(),
         }));
 
-        eventosFormateados.sort((a, b) => a.start - b.start);
-        setEventos(eventosFormateados);
-      })
-      .catch((error) => {
+        eventosFormateados.sort((a, b) => a.fechaInicio - b.fechaInicio);
+
+        if (JSON.stringify(eventos) !== JSON.stringify(eventosFormateados)) {
+          setEventos(eventosFormateados);
+        }
+      } catch (error) {
         console.error("Error al cargar los eventos:", error);
-      });
-  }, []);
+      }
+    }
 
+    fetchData();
+  }, []); // <-- Asegúrate de tener dependencias correctas aquí, o dejarlo como array vacío para ejecutar solo una vez
 
-  const manejarAgregarEvento = (nuevoEvento) => {
-    const updatedEventos = [...eventos, nuevoEvento];
-    setEventos(updatedEventos);
-    // BACKEND -------------------
+  // --- Filtro combinado de etiqueta y tiempo ---
+  const eventosFiltrados = eventos.filter((evento) => {
+    const ahora = dayjs();
+
+    // Filtrado por etiqueta
+    if (filtroEtiqueta !== "todas" && evento.etiqueta !== filtroEtiqueta) return false;
+
+    // Filtrado por tiempo
+    if (filtroTiempo === "pasados" && dayjs(evento.fechaFin).isBefore(ahora)) return true;
+    if (filtroTiempo === "proximos" && dayjs(evento.fechaInicio).isAfter(ahora)) return true;
+    if (filtroTiempo === "todos") return true;
+
+    return false;
+  });
+
+  const manejarAgregarEvento = async (nuevoEvento) => {
+    // const updatedEventos = [...eventos, nuevoEvento];
+    try {
+      const res = await ES.createEvent(nuevoEvento); // BACKEND ------------------- Llamado a api
+      console.log(res.data);
+      setEventos([
+        ...eventos,
+        nuevoEvento,
+      ]);
+      console.log('Eventos: ', eventos);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const manejarEditarEvento = (eventoEditado) => {
-    const updatedEventos = eventos.map((evento) =>
-      evento.id === eventoEditado.id ? eventoEditado : evento
-    );
-    setEventos(updatedEventos);
-    // BACKEND -------------------
+  const manejarEditarEvento = async (eventoEditado) => {
+    try {// BACKEND ------------------- Llamado a api
+      const res = await ES.updateEvent(eventoEditado.id, eventoEditado);
+      console.log(res.data);
+      // Actualizar el estado de eventos de forma inmutable
+      setEventos((prevEventos) =>
+        prevEventos.map((evento) =>
+          evento.idEvento === eventoEditado.id ? { ...evento, ...eventoEditado } : evento
+        )
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const manejarEliminarEvento = (id) => {
+  const manejarEliminarEvento = async (id) => {
     const confirmacion = window.confirm("¿Estás seguro de que quieres eliminar este evento?");
     if (confirmacion) {
-      const eventosActualizados = eventos.filter(evento => evento.id !== id);
-      setEventos(eventosActualizados);
-      // BACKEND -------------------
+      try {
+        const res = await ES.deleteEvent(id);
+        console.log(res);
+        const eventosActualizados = eventos.filter(evento => evento.id !== id);
+        setEventos(eventosActualizados);
+      } catch (error) {
+        console.log(error);
+      }
+      // BACKEND -------------------Llamado a api
     }
   };
 
@@ -99,13 +144,8 @@ const MiCalendario = () => {
   const abrirModal = (evento = null) => {
     setEsModalAbierto(true);
     setEventoEditar(evento);
+    //console.log(evento)
   };
-
-  // Filtrado de eventos
-  const eventosFiltrados = eventos.filter(evento => {
-    if (filtroEtiqueta !== "todas" && evento.label !== filtroEtiqueta) return false;
-    return true;
-  });
 
 
   return (
@@ -129,9 +169,10 @@ const MiCalendario = () => {
             <label className="block font-semibold">Filtrar por:</label>
             <select
               className="w-full p-2 border rounded-md"
-              value={filtro}
-              onChange={(e) => setFiltro(e.target.value)}
+              value={filtroTiempo}
+              onChange={(e) => setFiltroTiempo(e.target.value)}
             >
+              <option value="todos">Todos</option>
               <option value="proximos">Próximos</option>
               <option value="pasados">Pasados</option>
             </select>
@@ -156,14 +197,14 @@ const MiCalendario = () => {
           <ul className="space-y-4 max-h-[700px] overflow-y-auto">
             {eventosFiltrados.map((evento) => (
               <li
-                key={evento.id}
+                key={evento.idEvento}
                 className="p-1 border rounded-md shadow-sm cursor-pointer relative"
                 onClick={() => manejarEventoClick(evento)}
               >
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    manejarEliminarEvento(evento.id);
+                    manejarEliminarEvento(evento.idEvento);
                   }}
                   className="absolute top-2 right-2 text-red-300 hover:text-red-700 text-xs"
                 >
@@ -171,23 +212,23 @@ const MiCalendario = () => {
                 </button>
 
                 <h5 className="font-semibold">{evento.title}</h5>
-                <p className="text-sm">{dayjs(evento.start).format('DD/MM/YYYY HH:mm')} - {dayjs(evento.end).format('DD/MM/YYYY HH:mm')}</p>
+                <p className="text-sm">{dayjs(evento.fechaInicio).format('DD/MM/YYYY HH:mm')} - {dayjs(evento.fechaFin).format('DD/MM/YYYY HH:mm')}</p>
                 <p className="text-sm text-gray-600">{evento.descripcion}</p>
 
                 {(() => {
-                  if (etiquetas[evento.label] === "#a43636") {
+                  if (etiquetas[evento.etiqueta] === "#a43636") {
                     return (
                       <span className="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-red-900 dark:text-red-300">Importante</span>
                     );
-                  } else if (etiquetas[evento.label] === "#2c89ab") {
+                  } else if (etiquetas[evento.etiqueta] === "#2c89ab") {
                     return (
                       <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-blue-900 dark:text-blue-300">Medico</span>
                     );
-                  } else if (etiquetas[evento.label] === "#57884e") {
+                  } else if (etiquetas[evento.etiqueta] === "#57884e") {
                     return (
                       <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-green-900 dark:text-green-300">Estudio</span>
                     );
-                  } else if (etiquetas[evento.label] === "#c18a3c") {
+                  } else if (etiquetas[evento.etiqueta] === "#c18a3c") {
                     return (
                       <span className="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-yellow-900 dark:text-yellow-300">Personal</span>
                     );
@@ -235,12 +276,12 @@ const MiCalendario = () => {
               localizer={localizer}
               events={eventos}
               messages={messages}
-              startAccessor="start"
-              endAccessor="end"
+              startAccessor="fechaInicio"
+              endAccessor="fechaFin"
               eventPropGetter={(event) => {
                 return {
                   style: {
-                    backgroundColor: etiquetas[event.label],
+                    backgroundColor: etiquetas[event.etiqueta],
                     borderRadius: "5px",
                     color: 'white',
                     fontSize: '0.85rem',

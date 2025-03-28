@@ -59,6 +59,7 @@ const Tareas = () => {
     setTareaSeleccionada(tarea);
     setNota(tarea.nota || ""); // Cargar nota si existe
   };
+  
   const actualizarTituloTarea = (nuevoTitulo) => {
     if (!tareaSeleccionada) return;
 

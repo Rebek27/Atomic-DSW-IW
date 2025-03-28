@@ -1,13 +1,65 @@
+import { useEffect, useState } from "react";
+import { registerRequest } from "../../services/auth/authService";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 export default function SignUpForm() {
+  const navigate = useNavigate();
+  const [mensaje, setMensaje] = useState("");
+
+  function calcularEdad(fechaNacimiento) {
+    const hoy = new Date();
+    const nacimiento = new Date(fechaNacimiento);
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    const mes = hoy.getMonth() - nacimiento.getMonth();
+    if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+      edad--;
+    }
+    return edad;
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+
+    if (!data) {
+      setMensaje("Campos vacíos no se puede continuar con el registro");
+      return;
+    }
+    if (data.contrasena !== data.confContrasena) {
+      setMensaje("Las contraseñas no coinciden");
+      return;
+    }
+
+    data.edad = calcularEdad(data.edad);
+
+    try {
+      const res = await registerRequest(data);
+      toast.success("Registro exitoso. Revisa tu correo para verificar tu cuenta.");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    } catch (err) {
+      console.error("Error al registrar:", err);
+      toast.error(err.response?.data?.mensaje || "Hubo un error en el registro. Intenta más tarde.");
+    }
+  }
+
+  useEffect(() => {
+    if (mensaje) {
+      toast.info(mensaje);
+    }
+  }, [mensaje]);
+
   return (
     <>
       <div className="relative z-10 flex cursor-pointer items-center overflow-hidden rounded-xl border border-slate-1000 p-[1.9px] justify-center ">
         <div
-          class="animate-rotate absolute inset-0 h-full w-full rounded-full bg-[conic-gradient(#0ea5e9_20deg,transparent_120deg)]"
+          className="animate-rotate absolute inset-0 h-full w-full rounded-full bg-[conic-gradient(#0ea5e9_20deg,transparent_120deg)]"
         ></div>
-        <div class="relative z-20 flex w-full rounded-[0.60rem] bg-slate-800">
+        <div className="relative z-20 flex w-full rounded-[0.60rem] bg-slate-800">
           <div className="bg-white rounded-md p-8 bg-opacity-100 sm:mx-auto sm:w-full sm:max-w-lg">
             <div className="mb-2 sm:mx-auto sm:w-full sm:max-w-sm">
               <img
@@ -21,7 +73,7 @@ export default function SignUpForm() {
             </div>
 
             <div className="mt-1 sm:mx-auto sm:w-full sm:max-w-xl">
-              <form action="#" method="POST" className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
                   <div>
                     <label htmlFor="names" className="block text-sm font-medium text-inherit">
@@ -30,7 +82,7 @@ export default function SignUpForm() {
                     <div className="mt-1">
                       <input
                         id="names"
-                        name="names"
+                        name="nombre"
                         type="text"
                         required
                         autoComplete="email"
@@ -45,7 +97,7 @@ export default function SignUpForm() {
                     <div className="mt-1">
                       <input
                         id="lastName"
-                        name="lastName"
+                        name="apellidos"
                         type="text"
                         required
                         autoComplete="email"
@@ -64,10 +116,9 @@ export default function SignUpForm() {
                     <div className="mt-1">
                       <input
                         id="birth"
-                        name="birth"
+                        name="edad"
                         type="date"
                         required
-                        autoComplete="email"
                         className="block border-1 w-full rounded-md bg-gray-300 px-2 py-0.5 text-base text-gray-900 outline-1 outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-0 focus:outline-indigo-600 sm:text-sm"
                       />
                     </div>
@@ -80,9 +131,8 @@ export default function SignUpForm() {
                       <input
                         id="ocupacion"
                         name="ocupacion"
-                        type="combobox"
+                        type="text"
                         required
-                        autoComplete="email"
                         className="block border-1 w-full rounded-md bg-gray-300 px-2 py-0.5 text-base text-gray-900 outline-1 outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-0 focus:outline-indigo-600 sm:text-sm"
                       />
                     </div>
@@ -96,11 +146,10 @@ export default function SignUpForm() {
                   </label>
                   <div className="mt-1">
                     <input
-                      id="ocupacion"
-                      name="ocupacion"
+                      id="correo"
+                      name="correo"
                       type="email"
                       required
-                      autoComplete="email"
                       className="block border-1 w-full rounded-md bg-gray-300 px-2 py-0.5 text-base text-gray-900 outline-1 outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-0 focus:outline-indigo-600 sm:text-sm"
                     />
                   </div>
@@ -115,10 +164,11 @@ export default function SignUpForm() {
                     <div className="mt-1">
                       <input
                         id="password"
-                        name="password"
+                        name="contrasena"
                         type="password"
                         required
-                        autoComplete="current-password"
+                        pattern="^(?=.*[A-Z])(?=.*\d).{8,}$"
+                        title="Debe contener al menos 8 caracteres, una letra mayúscula y un número."
                         className="block border-1 w-full rounded-md bg-gray-300 px-2 py-0.5 text-base text-gray-900 outline-1 outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-0 focus:outline-indigo-600 sm:text-sm"
                       />
                     </div>
@@ -131,11 +181,12 @@ export default function SignUpForm() {
                     </div>
                     <div className="mt-1">
                       <input
-                        id="passwordConf"
-                        name="passwordConf"
+                        id="password"
+                        name="confContrasena"
                         type="password"
                         required
-                        autoComplete="current-password"
+                        pattern="^(?=.*[A-Z])(?=.*\d).{8,}$"
+                        title="Debe contener al menos 8 caracteres, una letra mayúscula y un número."
                         className="block border-1 w-full rounded-md bg-gray-300 px-2 py-0.5 text-base text-gray-900 outline-1 outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-0 focus:outline-indigo-600 sm:text-sm"
                       />
                     </div>

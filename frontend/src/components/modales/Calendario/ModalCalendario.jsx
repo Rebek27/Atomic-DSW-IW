@@ -11,12 +11,13 @@ const ModalCalendario = ({ onAgregarEvento, cerrarModal }) => {
   const manejarEnvio = (e) => {
     e.preventDefault();
     const nuevoEvento = {
-      id: Date.now(),
+      //id: Date.now(),
       title: titulo,
-      start: dayjs(inicio).toDate(),
-      end: dayjs(fin).toDate(),
-      label: etiqueta,
       descripcion: descripcion,
+      fechaInicio: dayjs(inicio).toDate(),
+      fechaFin: dayjs(fin).toDate(),
+      etiqueta: etiqueta,
+      recordatorio: false, //CHECAR ESTO
     };
 
     onAgregarEvento(nuevoEvento);

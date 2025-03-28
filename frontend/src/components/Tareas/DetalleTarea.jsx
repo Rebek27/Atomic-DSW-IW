@@ -22,11 +22,11 @@ const DetalleTarea = ({ tarea, nota, setNota, cerrarPanel, eliminarTarea, actual
         setMenuAbierto(false);
     };
 
-    const formatearFecha = (fecha) => {
-        return fecha
-          ? `Vence ${fecha.toLocaleDateString("es-ES", { weekday: "short", month: "long", day: "numeric" })}`
-          : "Selecciona Fecha";
-      };
+    // const formatearFecha = (fecha) => {
+    //     return fecha
+    //       ? `Vence ${fecha.toLocaleDateString("es-ES", { weekday: "short", month: "long", day: "numeric" })}`
+    //       : "Selecciona Fecha";
+    //   };
 
     return (
         <div className="w-1/4 h-full bg-purple-100 border-l border-gray-300 p-4 shadow-lg flex flex-col relative">
@@ -62,7 +62,7 @@ const DetalleTarea = ({ tarea, nota, setNota, cerrarPanel, eliminarTarea, actual
                     className="w-full flex py-3 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-m border border-gray-300 hover:bg-gray-100 hover:text-black-700 focus:z-10 focus:ring-4 focus:ring-gray-100
                     dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-800 dark:hover:text-white dark:hover:bg-gray-700"
                 >
-                    <FaCalendarAlt className="mr-2" /> {formatearFecha(tarea.fechaLimite)}
+                    {/* <FaCalendarAlt className="mr-2" /> {formatearFecha(tarea.fechaLimite)} */}
                 </button>
 
                 {/* Menú desplegable de fechas */}
