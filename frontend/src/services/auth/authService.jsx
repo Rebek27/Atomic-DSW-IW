@@ -23,8 +23,11 @@ export const resetPassword = async (token,correo,contrasena) =>
 export const cambiarContrasena = async (data) =>
   API.put('/cambiar-contrasena', data);
 
-export const cambiarNomAp = async (data) =>
-  API.put('/cambiar-nomap', data);
+export const cambiarNom = async (data) =>
+  API.put('/cambiar-nom', data);
+
+export const cambiarAp = async (data) =>
+  API.put('/cambiar-ap', data);
 
 export const cambiarNomUs = async (data) =>
   API.put('/cambiar-nomus', data);
