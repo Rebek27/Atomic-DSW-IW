@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode'; // ✅ Versión 4+
+import { jwtDecode } from 'jwt-decode'; 
+import { getUserByCorreo } from '../services/auth/authService';
 
 const AuthContext = createContext();
 
@@ -9,16 +10,24 @@ export const AuthProvider = ({ children }) => {
 
   // Inicializa usuario a partir del token (si existe y es válido)
   useEffect(() => {
-    if (token) {
+    const fetchUserDetails = async () => {
       try {
         const decoded = jwtDecode(token);
-        setUser(decoded);
+        setUser(decoded); // info básica del token (correo, rol, etc.)
+  
+        // 🔍 obtener datos más detallados desde la API (si lo necesitas)
+        const res = await getUserByCorreo(decoded.correo);
+        setUser(res.data); // ahora user tendrá toda la info del usuario
       } catch (err) {
-        console.error("Token inválido al decodificar:", err);
+        console.error("Error al cargar usuario:", err);
         localStorage.removeItem('sToken');
         setToken(null);
         setUser(null);
       }
+    };
+  
+    if (token) {
+      fetchUserDetails();
     } else {
       setUser(null);
     }
@@ -55,41 +64,3 @@ function useAuth() {
   }
 export { useAuth };
 
-// import { createContext, useContext, useState, useEffect } from 'react';
-// import {jwtDecode} from 'jwt-decode';
-
-// const AuthContext = createContext();
-
-// export const AuthProvider = ({ children }) => {
-//   const [token, setToken] = useState(() => localStorage.getItem('sToken'));
-//   const [user, setUser] = useState(() => {
-//     if (token) return jwtDecode(token);
-//     return null;
-//   });
-
-//   useEffect(() => {
-//     if (token) {
-//       setUser(jwtDecode(token));
-//     } else {
-//       setUser(null);
-//     }
-//   }, [token]);
-
-//   const login = (token) => {
-//     localStorage.setItem('sToken', token);
-//     setToken(token);
-//   };
-
-//   const logout = () => {
-//     localStorage.removeItem('sToken');
-//     setToken(null);
-//   };
-
-//   return (
-//     <AuthContext.Provider value={{ token, user, login, logout, isAuthenticated: !!token }}>
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };
-
-// export const useAuth = () => useContext(AuthContext);

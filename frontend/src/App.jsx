@@ -9,6 +9,9 @@ import Calendario from "./pages/Calendar";
 import Tareas from "./pages/Tareas";
 import Perfil from "./pages/Perfil";
 import ProtectedRoute from "./components/ProtectedRoute";
+import VerificarCuenta from "./services/VerificarCuenta";
+import ResetPassword from "./components/loginReg/ResetPassword";
+import SolicitarRecuperacion from "./components/loginReg/SolicitarRecuperacion";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./index.css";
@@ -25,6 +28,10 @@ function App() {
 
         <Route index path="/login" element={<Login />} />
         <Route index path="/singup" element={<SingUp />} />
+        <Route path="/verificar-correo" element={<VerificarCuenta/>}/>
+      <Route path="/recuperar-contra" element={<ResetPassword/>}/>
+      <Route path="/olvidaste-contra" element={<SolicitarRecuperacion/>}/>
+
 
 
         {/* Rutas protegidas */}

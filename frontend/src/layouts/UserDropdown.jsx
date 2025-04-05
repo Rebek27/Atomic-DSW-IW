@@ -1,10 +1,22 @@
 import { useState } from "react";
 import { DropdownItem } from "../components/ui/DropdownItems";
 import { Dropdown } from "../components/ui/Dropdown";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router";
+import { useAuth } from '../context/AuthContext'; // ruta según tu proyecto
+
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
+  const { logout } = useAuth();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = (e) => {
+    e.preventDefault();        // evita que navegue de inmediato
+    logout();                  // elimina el token y limpia el contexto
+    navigate('/');       // redirige manualmente
+  };
 
   function toggleDropdown() {
     setIsOpen(!isOpen);
@@ -21,13 +33,12 @@ export default function UserDropdown() {
         className="flex items-center text-gray-700 dropdown-toggle dark:text-gray-400"
       >
         <span className="mr-3 overflow-hidden rounded-full h-11 w-11">
-          <img src="src/assets/images/chabelo.jpg" alt="User" />
+          <img src={`/${user?.imagen}`} alt="User" />
         </span>
-        <span className="block mr-1 font-medium text-theme-sm">Musharof</span>
+        <span className="block mr-1 font-medium text-theme-sm">{user?.nombreUsuario}</span>
         <svg
-          className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
+            }`}
           width="18"
           height="20"
           viewBox="0 0 18 20"
@@ -51,32 +62,31 @@ export default function UserDropdown() {
       >
         <div>
           <span className="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-            Musharof Chowdhury
+          {user?.nombreUsuario}
           </span>
           <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-            randomuser@pimjo.com
+          {user?.correo}
           </span>
         </div>
 
         <ul className="flex flex-col gap-1 pt-4 pb-3 border-b border-gray-200 dark:border-gray-800">
           <li>
             <DropdownItem onItemClick={closeDropdown} tag="a" to="/profile">
-              Edit profile
-            </DropdownItem>
-          </li>
-          <li>
-            <DropdownItem onItemClick={closeDropdown} tag="a" to="/settings">
-              Account settings
+              Editar Perfil
             </DropdownItem>
           </li>
           <li>
             <DropdownItem onItemClick={closeDropdown} tag="a" to="/support">
-              Support
+              Ayuda
             </DropdownItem>
           </li>
         </ul>
-        <Link to="/signin" className="flex items-center gap-3 px-3 py-2 mt-3">
-          Sign out
+        <Link
+          to="/"
+          onClick={handleLogout}
+          className="flex items-center gap-3 px-3 py-2 mt-3"
+        >
+          Cerrar Sesión
         </Link>
       </Dropdown>
     </div>
