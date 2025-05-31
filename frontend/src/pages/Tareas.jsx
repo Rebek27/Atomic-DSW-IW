@@ -28,6 +28,15 @@ const Tareas = () => {
     fetchTareas();
   }, []);
 
+  const refrescarTareas = async () => {
+  try {
+    const response = await getTaskList();
+    setTareas(response.data);
+  } catch (error) {
+    console.error("Error al recargar tareas:", error);
+  }
+}
+
   const alternarMenu = () => {
     setMenuAbierto(!menuAbierto);
     setMostrarCalendario(false);
@@ -52,15 +61,6 @@ const Tareas = () => {
     }
   };
 
-  const eliminarTarea = async (idTarea) => {
-    try {
-      await deleteTask(idTarea);
-      setTareas((prev) => prev.filter((t) => t.idTarea !== idTarea));
-      setTareaSeleccionada(null);
-    } catch (error) {
-      console.error("Error al eliminar tarea:", error);
-    }
-  };
 
   const tareasIncompletas = tareas.filter((t) => !t.completado);
   const tareasCompletadas = tareas.filter((t) => t.completado);
@@ -76,39 +76,14 @@ const Tareas = () => {
     setNota(tarea.nota || "");
   };
 
-  const actualizarTituloTarea = (nuevoTitulo) => {
-    if (!tareaSeleccionada) return;
-
-    const actualizadas = tareas.map((t) =>
-      t.idTarea === tareaSeleccionada.idTarea
-        ? { ...t, titulo: nuevoTitulo }
-        : t
-    );
-
-    setTareas(actualizadas);
-    setTareaSeleccionada({ ...tareaSeleccionada, titulo: nuevoTitulo });
-  };
-
-  const actualizarFechaTarea = (idTarea, nuevaFecha) => {
-    const tareasActualizadas = tareas.map((t) =>
-      t.idTarea === idTarea
-        ? { ...t, fechaLimite: nuevaFecha.toISOString().split("T")[0] }
-        : t
-    );
-    setTareas(tareasActualizadas);
-    setTareaSeleccionada({
-      ...tareaSeleccionada,
-      fechaLimite: nuevaFecha.toISOString().split("T")[0],
-    });
-  };
 
   const formatearFecha = (fecha) => {
     return fecha
       ? `Vence ${fecha.toLocaleDateString("es-ES", {
-          weekday: "short",
-          month: "long",
-          day: "numeric",
-        })}`
+        weekday: "short",
+        month: "long",
+        day: "numeric",
+      })}`
       : <FaCalendarAlt className="w-4 h-4 hover:text-blue-300" />;
   };
 
@@ -288,12 +263,9 @@ const Tareas = () => {
       {/* Panel lateral */}
       <DetalleTarea
         tarea={tareaSeleccionada}
-        nota={nota}
-        setNota={setNota}
+        setTareaSeleccionada={setTareaSeleccionada}
         cerrarPanel={() => setTareaSeleccionada(null)}
-        eliminarTarea={eliminarTarea}
-        actualizarTituloTarea={actualizarTituloTarea}
-        actualizarFechaTarea={actualizarFechaTarea}
+        refrescarTareas={refrescarTareas} 
       />
     </div>
   );
