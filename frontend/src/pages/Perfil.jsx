@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { cambiarImagen, cambiarNom, cambiarNomUs, cambiarOcupacion, cambiarAp } from '../services/auth/authService';
+import { cambiarImagen, cambiarNom, cambiarNomUs, cambiarOcupacion, cambiarAp, eliminarCuenta } from '../services/auth/authService';
 import AvatarModal from '../components/modales/Perfil/AvatarModal'
 import { FaPen } from 'react-icons/fa6';
 import EditarCampoModal from '../components/modales/Perfil/EditarCampoModal';
+import CambiarContrasena from '../components/modales/Perfil/CambiarContraseña';
 
 
 const Perfil = () => {
@@ -21,13 +22,18 @@ const Perfil = () => {
     navigate('/signin');
   };
 
-  const handleDeleteAccount = () => {
+  const handleDeleteAccount = async () => {
     const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.");
     if (confirmDelete) {
-      // Aquí deberías llamar a tu servicio para eliminar la cuenta
-      console.log("Eliminar cuenta");
+      try {
+        // Aquí deberías llamar a tu servicio para eliminar la cuenta
+        await eliminarCuenta();
+        console.log("Eliminar cuenta");
       logout();
       navigate('/signin');
+      } catch (error) {
+        console.error("Error al eliminar la cuenta",error);
+      }
     }
   };
 
@@ -39,6 +45,13 @@ const Perfil = () => {
     } catch (error) {
       console.error("Error al cambiar avatar:", error);
     }
+  }
+
+  const handlePassChange = ()=>{
+    setModalOpen(true);
+  }
+  const closePassModal = () =>{
+    setModalOpen(false)
   }
 
   const abrirModal = (tipo, label, valor) => {
@@ -176,11 +189,16 @@ const Perfil = () => {
       < section className="bg-white rounded-xl shadow p-6" >
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-semibold">Contraseña</h3>
-          <button className="px-4 py-2 border rounded-full hover:bg-gray-100">
+          <button onClick={handlePassChange} className="px-4 py-2 border rounded-full hover:bg-gray-100">
             Cambiar contraseña
           </button>
         </div>
       </section >
+
+      <CambiarContrasena
+        onClose={closePassModal}
+        isVisible={modalOpen}
+      />
 
       {/* Cerrar sesión */}
       < section className="bg-white rounded-xl shadow p-6 flex justify-between items-center" >

@@ -37,3 +37,5 @@ export const cambiarOcupacion = async (data) =>
 
 export const cambiarImagen = async (data) =>
   API.put('/cambiar-imagen', data);
+
+export const eliminarCuenta = async () => API.delete('/user');

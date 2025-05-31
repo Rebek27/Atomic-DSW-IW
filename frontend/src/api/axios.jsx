@@ -19,7 +19,7 @@ API.interceptors.response.use(
     if (error.response?.status === 401) {
       console.warn('Token expirado o inválido');
       // Aquí podrías redirigir al login si quieres:
-      // window.location.href = '/login';
+      window.location.href = '/login';
     }
     return Promise.reject(error); // Reenvía el error para que el frontend lo maneje
   }
