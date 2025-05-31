@@ -50,76 +50,37 @@ const DetalleTarea = ({ tarea, nota, setNota, cerrarPanel, eliminarTarea, actual
                     className="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-s text-gray-900 border-0 border-b-2 border-purple-400 appearance-none
           dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600"
                     value={tarea.titulo}
-                    onChange={(e) => actualizarTituloTarea(e.target.value)} 
+                    onChange={(e) => actualizarTituloTarea(e.target.value)}
                 />
             </div>
 
             {/* Botón de Fecha Límite con menú desplegable */}
-            <div className="relative mt-4">
-                <button 
-                    type="button" 
-                    onClick={alternarMenu} 
-                    className="w-full flex py-3 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-m border border-gray-300 hover:bg-gray-100 hover:text-black-700 focus:z-10 focus:ring-4 focus:ring-gray-100
-                    dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-800 dark:hover:text-white dark:hover:bg-gray-700"
-                >
-                    {/* <FaCalendarAlt className="mr-2" /> {formatearFecha(tarea.fechaLimite)} */}
-                </button>
-
-                {/* Menú desplegable de fechas */}
-                {menuAbierto && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
-                        <ul className="py-1">
-                            <li className="flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-gray-100" 
-                                onClick={() => seleccionarFecha(new Date())}>
-                                <span>Hoy</span>
-                                <span className="text-gray-400">{new Date().toLocaleDateString("es-ES", { weekday: "short" })}</span>
-                            </li>
-                            <li className="flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-gray-100" 
-                                onClick={() => seleccionarFecha(new Date(Date.now() + 86400000))}>
-                                <span>Mañana</span>
-                                <span className="text-gray-400">{new Date(Date.now() + 86400000).toLocaleDateString("es-ES", { weekday: "short" })}</span>
-                            </li>
-                            <li className="flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-gray-100" 
-                                onClick={() => seleccionarFecha(new Date(Date.now() + 7 * 86400000))}>
-                                <span>Próxima semana</span>
-                                <span className="text-gray-400">{new Date(Date.now() + 7 * 86400000).toLocaleDateString("es-ES", { weekday: "short" })}</span>
-                            </li>
-                            <li className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100" 
-                                onClick={() => setMostrarCalendario(!mostrarCalendario)}>
-                                <span>Elegir una fecha</span>
-                            </li>
-
-                            {/* Calendario de selección personalizada */}
-                            {mostrarCalendario && (
-                                <div className="px-4 py-2">
-                                    <DatePicker 
-                                        selected={tarea.fechaLimite ? new Date(tarea.fechaLimite) : null}
-                                        onChange={(fecha) => seleccionarFecha(fecha)}
-                                        inline
-                                        className="border-none"
-                                    />
-                                </div>
-                            )}
-                             <li className="flex items-center px-4 py-2 text-red-600 cursor-pointer hover:bg-red-100" onClick={() => seleccionarFecha(null)}>
-                                                    <FaTrash className="text-red-500 mr-2" />
-                                                    <span>Eliminar fecha</span>
-                                                  </li>
-                        </ul>
-                    </div>
-                )}
-            </div>
+            {tarea.fechaLimite && (
+                <div className="mt-6 flex items-center text-s text-gray-700">
+                    <FaCalendarAlt className="mr-2 text-purple-500" />
+                    <span class="text-s">
+                        Vence{" "}
+                        {new Date(tarea.fechaLimite).toLocaleDateString("es-ES", {
+                            weekday: "short",
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric"
+                        })}
+                    </span>
+                </div>
+            )}
 
             {/* Notas */}
             <div className="mt-4">
-                <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notas:</label>
-                <textarea 
-                    id="message" 
-                    rows="4" 
+                <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción:</label>
+                <textarea
+                    id="message"
+                    rows="4"
                     value={nota}
                     onChange={(e) => setNota(e.target.value)}
-                    placeholder="Escribe notas aquí..." 
+                    placeholder="Escribe notas aquí..."
                     className="block p-2.5 w-full text-sm text-gray-700  rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-purple-500 dark:border-purple-600
-                    dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-purple-500" 
+                    dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-purple-500"
                 ></textarea>
             </div>
 

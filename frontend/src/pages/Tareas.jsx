@@ -1,20 +1,12 @@
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import tareasData from "../components/DatosEstaticos/tareas.json"; // Importamos el JSON
 import { FaCalendarAlt, FaBell, FaTrash, FaChevronDown, FaChevronRight } from "react-icons/fa";
 import DetalleTarea from "../components/Tareas/DetalleTarea.jsx";
+import { createTask, getTaskList, updateTask, deleteTask } from "../services/tasks/taskService.jsx";
 
 const Tareas = () => {
-  // Estado para manejar las tareas
   const [tareas, setTareas] = useState([]);
-
-  // Cargar tareas desde el JSON al montar el componente
-  useEffect(() => {
-    setTareas(tareasData);
-  }, []);
-
-  // Estado del formulario
   const [tarea, setTarea] = useState("");
   const [fechaSeleccionada, setFechaSeleccionada] = useState(null);
   const [notificacionActiva, setNotificacionActiva] = useState(false);
@@ -22,104 +14,136 @@ const Tareas = () => {
   const [mostrarCalendario, setMostrarCalendario] = useState(false);
   const [mostrarCompletadas, setMostrarCompletadas] = useState(true);
   const [tareaSeleccionada, setTareaSeleccionada] = useState(null);
-  const [nota, setNota] = useState(""); // Estado para notas
+  const [nota, setNota] = useState("");
 
-  // Alternar el menú de selección de fecha
+  useEffect(() => {
+    const fetchTareas = async () => {
+      try {
+        const response = await getTaskList();
+        setTareas(response.data);
+      } catch (error) {
+        console.error("Error al cargar tareas:", error);
+      }
+    };
+    fetchTareas();
+  }, []);
+
   const alternarMenu = () => {
     setMenuAbierto(!menuAbierto);
     setMostrarCalendario(false);
   };
 
-  // Alternar el estado de completado de una tarea
-  const toggleCompletado = (id) => {
-    const nuevasTareas = tareas.map((t) =>
-      t.id === id ? { ...t, completado: !t.completado } : t
-    );
-    setTareas(nuevasTareas);
+  const toggleCompletado = async (idTarea) => {
+    const tareaOriginal = tareas.find((t) => t.idTarea === idTarea);
+    if (!tareaOriginal) return;
+
+    const actualizado = {
+      ...tareaOriginal,
+      completado: !tareaOriginal.completado,
+    };
+
+    try {
+      await updateTask(idTarea, actualizado);
+      setTareas((prev) =>
+        prev.map((t) => (t.idTarea === idTarea ? actualizado : t))
+      );
+    } catch (error) {
+      console.error("Error al actualizar tarea:", error);
+    }
   };
 
-  // Eliminar una tarea
-  const eliminarTarea = (id) => {
-    setTareas(tareas.filter((t) => t.id !== id));
-    setTareaSeleccionada(null);
+  const eliminarTarea = async (idTarea) => {
+    try {
+      await deleteTask(idTarea);
+      setTareas((prev) => prev.filter((t) => t.idTarea !== idTarea));
+      setTareaSeleccionada(null);
+    } catch (error) {
+      console.error("Error al eliminar tarea:", error);
+    }
   };
 
-  // Separar tareas en completadas e incompletas
   const tareasIncompletas = tareas.filter((t) => !t.completado);
   const tareasCompletadas = tareas.filter((t) => t.completado);
 
-  // Seleccionar una fecha y actualizar el estado
   const seleccionarFecha = (fecha) => {
     setFechaSeleccionada(fecha);
     setMenuAbierto(false);
   };
 
-  // Seleccionar una tarea para ver detalles
   const seleccionarTarea = (tarea) => {
+    if (!tarea) return;
     setTareaSeleccionada(tarea);
-    setNota(tarea.nota || ""); // Cargar nota si existe
+    setNota(tarea.nota || "");
   };
-  
+
   const actualizarTituloTarea = (nuevoTitulo) => {
     if (!tareaSeleccionada) return;
 
-    // Actualiza el estado de las tareas con el nuevo título
-    const tareasActualizadas = tareas.map((t) =>
-      t.id === tareaSeleccionada.id ? { ...t, titulo: nuevoTitulo } : t
+    const actualizadas = tareas.map((t) =>
+      t.idTarea === tareaSeleccionada.idTarea
+        ? { ...t, titulo: nuevoTitulo }
+        : t
     );
 
-    setTareas(tareasActualizadas);
-    setTareaSeleccionada({ ...tareaSeleccionada, titulo: nuevoTitulo }); // Actualiza el panel de detalles
+    setTareas(actualizadas);
+    setTareaSeleccionada({ ...tareaSeleccionada, titulo: nuevoTitulo });
   };
 
-  const actualizarFechaTarea = (id, nuevaFecha) => {
+  const actualizarFechaTarea = (idTarea, nuevaFecha) => {
     const tareasActualizadas = tareas.map((t) =>
-      t.id === id ? { ...t, fechaLimite: nuevaFecha.toISOString().split("T")[0] } : t
+      t.idTarea === idTarea
+        ? { ...t, fechaLimite: nuevaFecha.toISOString().split("T")[0] }
+        : t
     );
-
     setTareas(tareasActualizadas);
-    setTareaSeleccionada({ ...tareaSeleccionada, fechaLimite: nuevaFecha.toISOString().split("T")[0] });
+    setTareaSeleccionada({
+      ...tareaSeleccionada,
+      fechaLimite: nuevaFecha.toISOString().split("T")[0],
+    });
   };
 
-  // Formatear fecha
   const formatearFecha = (fecha) => {
     return fecha
-      ? `Vence ${fecha.toLocaleDateString("es-ES", { weekday: "short", month: "long", day: "numeric" })}`
+      ? `Vence ${fecha.toLocaleDateString("es-ES", {
+          weekday: "short",
+          month: "long",
+          day: "numeric",
+        })}`
       : <FaCalendarAlt className="w-4 h-4 hover:text-blue-300" />;
   };
 
-  // Agregar una nueva tarea a la lista
-  const agregarTarea = () => {
+  const agregarTarea = async () => {
     if (tarea.trim() === "") return;
 
     const nuevaTarea = {
-      id: tareas.length + 1,
       titulo: tarea,
-      fechaLimite: fechaSeleccionada ? fechaSeleccionada.toISOString().split("T")[0] : null,
+      fechaLimite: fechaSeleccionada,
       notificacion: notificacionActiva,
       completado: false,
+      descripcion: "",
     };
 
-    setTareas([...tareas, nuevaTarea]);
-    setTarea("");
-    setFechaSeleccionada(null);
-    setNotificacionActiva(false);
+    try {
+      const response = await createTask(nuevaTarea);
+      setTareas((prev) => [...prev, response.data]);
+      setTarea("");
+      setFechaSeleccionada(null);
+      setNotificacionActiva(false);
+    } catch (error) {
+      console.error("Error al agregar tarea:", error);
+    }
   };
 
   return (
-
     <div className="flex h-screen transition-all duration-300 rounded-2xl border border-gray-300 bg-white dark:border-gray-800 dark:bg-white/[0.20]">
       <div className={`p-6 transition-all duration-300 ${tareaSeleccionada ? "w-3/4" : "w-full"}`}>
         <h1 className="text-3xl font-semibold text-left">Tareas</h1>
 
-        {/* Input para Nueva Tarea */}
+        {/* Formulario nueva tarea */}
         <form>
           <div className="flex w-full mt-4">
             <div className="flex w-full items-center bg-white shadow-md rounded-lg p-2 border border-gray-300">
-              {/* Botón de selección */}
               <input type="radio" className="mr-3 w-5 h-5 text-blue-600" />
-
-              {/* Campo de texto */}
               <input
                 type="text"
                 value={tarea}
@@ -128,7 +152,6 @@ const Tareas = () => {
                 className="flex-1 border-none outline-none text-lg p-2 rounded-lg"
               />
 
-              {/* Menú de selección de fecha */}
               <div className="relative inline-block text-left">
                 <button type="button" onClick={alternarMenu} className="p-2 rounded-lg hover:bg-gray-200">
                   {formatearFecha(fechaSeleccionada)}
@@ -154,7 +177,7 @@ const Tareas = () => {
                       </li>
                       {mostrarCalendario && (
                         <div className="px-4 py-2">
-                          <DatePicker selected={fechaSeleccionada} onChange={(fecha) => seleccionarFecha(fecha)} inline className="border-none" />
+                          <DatePicker selected={fechaSeleccionada} onChange={(fecha) => seleccionarFecha(fecha)} inline />
                         </div>
                       )}
                       <li className="flex items-center px-4 py-2 text-red-600 cursor-pointer hover:bg-red-100" onClick={() => seleccionarFecha(null)}>
@@ -166,12 +189,6 @@ const Tareas = () => {
                 )}
               </div>
 
-              {/* Botón de Campana */}
-              <button type="button" onClick={() => setNotificacionActiva(!notificacionActiva)} className="p-2 rounded-lg hover:bg-gray-200">
-                <FaBell className={`w-5 h-5 ${notificacionActiva ? "text-yellow-500" : "text-gray-400"} hover:text-yellow-500`} />
-              </button>
-
-              {/* Botón de Agregar */}
               <button type="button" onClick={agregarTarea} className="ml-3 text-blue-600 font-semibold hover:underline">
                 Añadir
               </button>
@@ -181,49 +198,49 @@ const Tareas = () => {
 
         <hr className="my-4 border-gray-300" />
 
-        {/* Tabla de Tareas Incompletas */}
+        {/* Tareas Incompletas */}
         <table className="w-full border-collapse border border-gray-300 shadow-md">
           <thead className="bg-gray-100 text-gray-600">
             <tr>
               <th className="px-4 py-2 text-left">✔</th>
               <th className="px-4 py-2 text-left">Título</th>
               <th className="px-4 py-2 text-left">Fecha Límite</th>
-              <th className="px-4 py-2 text-center">Notificación</th>
             </tr>
           </thead>
           <tbody>
             {tareasIncompletas.map((tarea) => (
               <tr
-                key={tarea.id}
+                key={tarea.idTarea}
                 className="border-b border-gray-200 hover:bg-gray-50 cursor-pointer"
                 onClick={() => seleccionarTarea(tarea)}
               >
-                {/* Checkbox de completado */}
                 <td className="px-4 py-2">
                   <input
                     type="checkbox"
                     checked={tarea.completado}
-                    onChange={() => toggleCompletado(tarea.id)}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                      toggleCompletado(tarea.idTarea);
+                    }}
                     className="w-5 h-5 cursor-pointer"
                   />
                 </td>
-
-                {/* Título de la tarea */}
                 <td className="px-4 py-2">{tarea.titulo}</td>
-
-                {/* Fecha límite */}
-                <td className="px-4 py-2">{tarea.fechaLimite}</td>
-
-                {/* Notificación (Campana) */}
-                <td className="px-4 py-2 text-center">
-                  <FaBell className={`text-xl cursor-pointer ${tarea.notificacion ? "text-yellow-500" : "text-gray-400"}`} />
+                <td className="px-4 py-2">
+                  {tarea.fechaLimite &&
+                    new Date(tarea.fechaLimite).toLocaleDateString("es-ES", {
+                      weekday: "short",
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
 
-        {/* Sección de tareas completadas */}
+        {/* Tareas Completadas */}
         {tareasCompletadas.length > 0 && (
           <>
             <button
@@ -239,29 +256,25 @@ const Tareas = () => {
                 <tbody>
                   {tareasCompletadas.map((tarea) => (
                     <tr
-                      key={tarea.id}
+                      key={tarea.idTarea}
                       className="border-b border-gray-200 hover:bg-gray-50 cursor-pointer"
                       onClick={() => seleccionarTarea(tarea)}
                     >
-                      {/* Checkbox de completado */}
                       <td className="px-4 py-2">
                         <input
                           type="checkbox"
                           checked={tarea.completado}
-                          onChange={() => toggleCompletado(tarea.id)}
+                          onChange={(e) => {
+                            e.stopPropagation();
+                            toggleCompletado(tarea.idTarea);
+                          }}
                           className="w-5 h-5 cursor-pointer"
                         />
                       </td>
-
-                      {/* Título de la tarea (tachado si está completada) */}
                       <td className="px-4 py-2 line-through">{tarea.titulo}</td>
-
-                      {/* Fecha límite */}
                       <td className="px-4 py-2">{tarea.fechaLimite}</td>
-
-                      {/* Notificación (Campana) */}
                       <td className="px-4 py-2 text-center">
-                        <FaBell className={`text-xl cursor-pointer ${tarea.notificacion ? "text-yellow-500" : "text-gray-400"}`} />
+                        <FaBell className={`text-xl ${tarea.notificacion ? "text-yellow-500" : "text-gray-400"}`} />
                       </td>
                     </tr>
                   ))}
@@ -270,11 +283,9 @@ const Tareas = () => {
             )}
           </>
         )}
-
-
       </div>
 
-      {/* 📌 Panel lateral para detalles de la tarea */}
+      {/* Panel lateral */}
       <DetalleTarea
         tarea={tareaSeleccionada}
         nota={nota}
@@ -282,10 +293,9 @@ const Tareas = () => {
         cerrarPanel={() => setTareaSeleccionada(null)}
         eliminarTarea={eliminarTarea}
         actualizarTituloTarea={actualizarTituloTarea}
-        actualizarFechaTarea={actualizarFechaTarea} // 🔥 Nueva función para actualizar la fecha
+        actualizarFechaTarea={actualizarFechaTarea}
       />
     </div>
-
   );
 };
 

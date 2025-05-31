@@ -70,7 +70,7 @@ const MiCalendario = () => {
     }
 
     fetchData();
-  }, []); // <-- Asegúrate de tener dependencias correctas aquí, o dejarlo como array vacío para ejecutar solo una vez
+  }, []); 
 
   // --- Filtro combinado de etiqueta y tiempo ---
   const eventosFiltrados = eventos.filter((evento) => {
