@@ -112,8 +112,8 @@ export default function LoginForm() {
                   ¡Regístrate Ahora!
                 </a>
               </p>
-              <hr className="mt-3 border-gray-300" />
-              {/* Botón de inicio de sesión con Google */}
+              {/*<hr className="mt-3 border-gray-300" />
+               Botón de inicio de sesión con Google 
               <div className="mt-5">
                 <button
                   type="button"
@@ -126,7 +126,7 @@ export default function LoginForm() {
                   />
                   Iniciar sesión con Google
                 </button>
-              </div>
+              </div>*/}
 
             </div>
           </div>

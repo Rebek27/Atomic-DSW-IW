@@ -209,9 +209,9 @@ export default function SignUpForm() {
                   ¡Inicia Sesión!
                 </a>
               </p>
-              <hr className="mt-3 border-gray-300" />
+              {/*<hr className="mt-3 border-gray-300" />
 
-              {/* Botón de inicio de sesión con Google */}
+               Botón de inicio de sesión con Google 
               <div className="mt-3 flex w-full justify-center items-center">
                 <button
                   type="button"
@@ -224,7 +224,7 @@ export default function SignUpForm() {
                   />
                   Ingresar con Google
                 </button>
-              </div>
+              </div>*/}
 
             </div>
           </div>

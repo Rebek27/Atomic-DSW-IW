@@ -10,7 +10,7 @@ const Home = () => {
 
   // Función auxiliar para parsear fechas
   const parseDate = (dateField) => {
-    if (typeof dateField === 'object' && dateField.$date) {
+    if (dateField !== null && typeof dateField === 'object' && dateField.$date) {
       return new Date(dateField.$date);
     }
     return new Date(dateField);
@@ -102,7 +102,7 @@ const Home = () => {
                 <h5 className="text-lg font-bold mb-2">
                   Evento: {event.title || event.titleEvent || "Sin título"}
                 </h5>
-                <p className="mb-2">Descripción: {event.descripcion}</p>
+                <p className="mb-2">{event.descripcion === "" ? "La Descripción está vacía":"Descripción: " + event.descripcion}</p>
                 <p className="mb-2">
                   <strong>Fecha Inicio:</strong> {formatDate(event.fechaInicio)}
                 </p>
@@ -135,7 +135,7 @@ const Home = () => {
               </div>
               <div className="p-4">
                 <h5 className="text-lg font-bold mb-2">Tarea: {task.titulo}</h5>
-                <p className="mb-2">Descripción: {task.descripcion}</p>
+                <p className="mb-2">{task.descripcion == "" ? "No hay descripción." : "Descripción: " + task.descripcion}</p>
                 <p>
                   <strong>Fecha Límite:</strong> {formatDate(task.fechaLimite)}
                 </p>

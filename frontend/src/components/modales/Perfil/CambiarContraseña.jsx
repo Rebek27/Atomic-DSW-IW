@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { cambiarContrasena } from "../../../services/auth/authService";
+import { toast } from "react-toastify";
 
 const CambiarContrasena = ({onClose,isVisible}) =>{
     const [pass,setPass] = useState('');
@@ -13,10 +14,10 @@ const CambiarContrasena = ({onClose,isVisible}) =>{
     const handleSubmit = async () =>{
         try {
             await cambiarContrasena({oldPass:pass,newPass:newPass});
-            alert('Contraseña actualizada correctamene');
+            toast.success('Contraseña actualizada correctamene');
             onClose();
         } catch (error) {
-            alert(error.response.data.mensaje.mensaje);
+            toast.error(error.response.data.mensaje.mensaje);
             console.error('Error al cambiar la contraseña:',error);
         }
     }

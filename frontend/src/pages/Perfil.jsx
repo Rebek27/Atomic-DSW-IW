@@ -15,6 +15,7 @@ const Perfil = () => {
   const [modalTipo, setModalTipo] = useState(null);
   const [modalLabel, setModalLabel] = useState('');
   const [valorActual, setValorActual] = useState('');
+  const [passChange,setPassChange] = useState(false);
 
 
   const handleLogout = () => {
@@ -48,10 +49,10 @@ const Perfil = () => {
   }
 
   const handlePassChange = ()=>{
-    setModalOpen(true);
+    setPassChange(true);
   }
   const closePassModal = () =>{
-    setModalOpen(false)
+    setPassChange(false);
   }
 
   const abrirModal = (tipo, label, valor) => {
@@ -197,7 +198,7 @@ const Perfil = () => {
 
       <CambiarContrasena
         onClose={closePassModal}
-        isVisible={modalOpen}
+        isVisible={passChange}
       />
 
       {/* Cerrar sesión */}
