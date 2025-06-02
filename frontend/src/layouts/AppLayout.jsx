@@ -12,7 +12,6 @@ const LayoutContent = () => {
     <div className="min-h-screen xl:flex">
       <div>
         <AppSidebar />
-        <Backdrop />
       </div>
       <div
         className={`flex-1 transition-all duration-300 ease-in-out ${

@@ -76,7 +76,7 @@ export default function UserDropdown() {
             </DropdownItem>
           </li>
           <li>
-            <DropdownItem onItemClick={closeDropdown} tag="a" to="/support">
+            <DropdownItem onItemClick={closeDropdown} tag="a" to="/faq">
               Ayuda
             </DropdownItem>
           </li>

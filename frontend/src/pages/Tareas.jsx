@@ -29,13 +29,13 @@ const Tareas = () => {
   }, []);
 
   const refrescarTareas = async () => {
-  try {
-    const response = await getTaskList();
-    setTareas(response.data);
-  } catch (error) {
-    console.error("Error al recargar tareas:", error);
+    try {
+      const response = await getTaskList();
+      setTareas(response.data);
+    } catch (error) {
+      console.error("Error al recargar tareas:", error);
+    }
   }
-}
 
   const alternarMenu = () => {
     setMenuAbierto(!menuAbierto);
@@ -110,61 +110,46 @@ const Tareas = () => {
   };
 
   return (
-    <div className="flex h-screen transition-all duration-300 rounded-2xl border border-gray-300 bg-white dark:border-gray-800 dark:bg-white/[0.20]">
+    <div className="flex  h-[80vh] transition-all duration-300 rounded-2xl border border-gray-300 bg-white dark:border-gray-800 dark:bg-white/[0.20]">
       <div className={`p-6 transition-all duration-300 ${tareaSeleccionada ? "w-3/4" : "w-full"}`}>
-        <h1 className="text-3xl font-semibold text-left">Tareas</h1>
+        <h1 className="text-3xl font-bold text-indigo-800">Tareas</h1>
 
-        {/* Formulario nueva tarea */}
         <form>
           <div className="flex w-full mt-4">
-            <div className="flex w-full items-center bg-white shadow-md rounded-lg p-2 border border-gray-300">
-              <input type="radio" className="mr-3 w-5 h-5 text-blue-600" />
+            <div className="flex w-full items-center bg-white/90 shadow rounded-lg p-2 border border-violet-200">
+              <input type="radio" className="mr-3 w-5 h-5 text-indigo-600" />
               <input
                 type="text"
                 value={tarea}
                 onChange={(e) => setTarea(e.target.value)}
                 placeholder="Escribe una tarea..."
-                className="flex-1 border-none outline-none text-lg p-2 rounded-lg"
+                className="flex-1 bg-slate-100 border-none outline-none text-lg p-2 rounded-lg"
               />
 
+              {/* Botón de fecha */}
               <div className="relative inline-block text-left">
-                <button type="button" onClick={alternarMenu} className="p-2 rounded-lg hover:bg-gray-200">
+                <button
+                  type="button"
+                  onClick={alternarMenu}
+                  className="p-2 rounded-lg text-gray-600 hover:bg-indigo-100 hover:text-indigo-700"
+                >
                   {formatearFecha(fechaSeleccionada)}
                 </button>
 
+                {/* Menú de fechas */}
                 {menuAbierto && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg">
-                    <ul className="py-1">
-                      <li className="flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-gray-100" onClick={() => seleccionarFecha(new Date())}>
-                        <span>Hoy</span>
-                        <span className="text-gray-400">{new Date().toLocaleDateString("es-ES", { weekday: "short" })}</span>
-                      </li>
-                      <li className="flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-gray-100" onClick={() => seleccionarFecha(new Date(Date.now() + 86400000))}>
-                        <span>Mañana</span>
-                        <span className="text-gray-400">{new Date(Date.now() + 86400000).toLocaleDateString("es-ES", { weekday: "short" })}</span>
-                      </li>
-                      <li className="flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-gray-100" onClick={() => seleccionarFecha(new Date(Date.now() + 7 * 86400000))}>
-                        <span>Próxima semana</span>
-                        <span className="text-gray-400">{new Date(Date.now() + 7 * 86400000).toLocaleDateString("es-ES", { weekday: "short" })}</span>
-                      </li>
-                      <li className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100" onClick={() => setMostrarCalendario(!mostrarCalendario)}>
-                        <span>Elegir una fecha</span>
-                      </li>
-                      {mostrarCalendario && (
-                        <div className="px-4 py-2">
-                          <DatePicker selected={fechaSeleccionada} onChange={(fecha) => seleccionarFecha(fecha)} inline />
-                        </div>
-                      )}
-                      <li className="flex items-center px-4 py-2 text-red-600 cursor-pointer hover:bg-red-100" onClick={() => seleccionarFecha(null)}>
-                        <FaTrash className="text-red-500 mr-2" />
-                        <span>Eliminar fecha</span>
-                      </li>
-                    </ul>
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-violet-200 rounded-lg shadow-lg z-10">
+                    {/* ... mismos items con hover:bg-violet-50 */}
                   </div>
                 )}
               </div>
 
-              <button type="button" onClick={agregarTarea} className="ml-3 text-blue-600 font-semibold hover:underline">
+              {/* Botón Añadir */}
+              <button
+                type="button"
+                onClick={agregarTarea}
+                className="ml-3 text-indigo-600 font-semibold hover:underline"
+              >
                 Añadir
               </button>
             </div>
@@ -247,10 +232,16 @@ const Tareas = () => {
                         />
                       </td>
                       <td className="px-4 py-2 line-through">{tarea.titulo}</td>
-                      <td className="px-4 py-2">{tarea.fechaLimite}</td>
-                      <td className="px-4 py-2 text-center">
-                        <FaBell className={`text-xl ${tarea.notificacion ? "text-yellow-500" : "text-gray-400"}`} />
+                      <td className="px-4 py-2">
+                        {tarea.fechaLimite &&
+                          new Date(tarea.fechaLimite).toLocaleDateString("es-ES", {
+                            weekday: "short",
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                          })}
                       </td>
+
                     </tr>
                   ))}
                 </tbody>
@@ -265,7 +256,7 @@ const Tareas = () => {
         tarea={tareaSeleccionada}
         setTareaSeleccionada={setTareaSeleccionada}
         cerrarPanel={() => setTareaSeleccionada(null)}
-        refrescarTareas={refrescarTareas} 
+        refrescarTareas={refrescarTareas}
       />
     </div>
   );

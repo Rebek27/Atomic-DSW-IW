@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 import { getEventList } from '../services/events/eventServices';
 import { getTaskList } from '../services/tasks/taskService';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import fondo from '../assets/images/Fondo1.png';
 
 const Home = () => {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [event, setEvent] = useState(null);
   const [task, setTask] = useState(null);
 
-  // Función auxiliar para parsear fechas
   const parseDate = (dateField) => {
     if (dateField !== null && typeof dateField === 'object' && dateField.$date) {
       return new Date(dateField.$date);
@@ -16,10 +18,8 @@ const Home = () => {
     return new Date(dateField);
   };
 
-  // Formatear fecha en un formato legible
   const formatDate = (dateField) => {
     const date = parseDate(dateField);
-    // Verifica que la fecha sea válida
     return isNaN(date.getTime()) ? 'Fecha inválida' : date.toLocaleDateString();
   };
 
@@ -28,32 +28,24 @@ const Home = () => {
       try {
         const res = await getEventList();
         const res2 = await getTaskList();
-
         const eventos = res.data;
         const tareas = res2.data;
         const fechaActual = new Date();
 
-        // Asegurarse de que existan datos en los arreglos
         if (tareas && tareas.length > 0) {
-          // Obtener la tarea con la fecha límite más cercana a la fecha actual
           const tareaMasCercana = tareas.reduce((prev, curr) => {
             const prevDate = parseDate(prev.fechaLimite);
             const currDate = parseDate(curr.fechaLimite);
-            return Math.abs(currDate - fechaActual) < Math.abs(prevDate - fechaActual)
-              ? curr
-              : prev;
+            return Math.abs(currDate - fechaActual) < Math.abs(prevDate - fechaActual) ? curr : prev;
           });
           setTask(tareaMasCercana);
         }
 
         if (eventos && eventos.length > 0) {
-          // Obtener el evento con la fecha de inicio más cercana a la fecha actual
           const eventoMasCercano = eventos.reduce((prev, curr) => {
             const prevDate = parseDate(prev.fechaInicio);
             const currDate = parseDate(curr.fechaInicio);
-            return Math.abs(currDate - fechaActual) < Math.abs(prevDate - fechaActual)
-              ? curr
-              : prev;
+            return Math.abs(currDate - fechaActual) < Math.abs(prevDate - fechaActual) ? curr : prev;
           });
           setEvent(eventoMasCercano);
         }
@@ -64,97 +56,74 @@ const Home = () => {
     obtenerDatos();
   }, []);
 
-  // Estilos en línea para el banner
-  const bannerStyle = {
-    height: '120px',
-    background: 'linear-gradient(135deg, #a3dce3, #fed6e3)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    fontFamily: 'Arial, sans-serif',
-    color: '#333',
-  };
-
-  const headingStyle = {
-    fontSize: '2em',
-    margin: 0,
-  };
-
   return (
-    <>
-      {/* Banner */}
-      <div style={bannerStyle}>
-        <h1 style={headingStyle}>Bienvenido a Atomic</h1>
-      </div>
-      
-      {/* Contenedor de tarjetas debajo del banner */}
-      <div className="container mx-auto mt-4 px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Tarjeta para el Evento */}
-          {event ? (
-            <div className="bg-white shadow rounded-lg overflow-hidden">
-              <div className="bg-blue-300 px-4 py-2 border-b">
-                <h3 className="text-lg font-semibold">Evento Más Cercano</h3>
-                
-              </div>
-              <div className="p-4">
-                <h5 className="text-lg font-bold mb-2">
-                  Evento: {event.title || event.titleEvent || "Sin título"}
-                </h5>
-                <p className="mb-2">{event.descripcion === "" ? "La Descripción está vacía":"Descripción: " + event.descripcion}</p>
-                <p className="mb-2">
-                  <strong>Fecha Inicio:</strong> {formatDate(event.fechaInicio)}
-                </p>
-                <p className="mb-2">
-                  <strong>Fecha Fin:</strong> {formatDate(event.fechaFin)}
-                </p>
-                <p>
-                  <strong>Etiqueta:</strong> {event.etiqueta}
-                </p>
-                <button type="button" onClick={()=>navigate("/calendario")} className="p-1 m-1 rounded-lg bg-blue-200 hover:bg-blue-100">
-                  Ver Todos
-                </button>
-              </div>
-              
-            </div>
-          ) : (
-            <div className="bg-blue-100 border border-blue-200 text-blue-800 px-4 py-2 rounded">
-              Aun no hay eventos
-              <button type="button" onClick={()=>navigate("/calendario")}  className="p-1 m-1 rounded-lg hover:bg-gray-200">
-                  Agrega uno nuevo!
-              </button>
-            </div>
-          )}
+    <div className="flex justify-center items-center w-ful p-6">
+      {/* Cuadro redondeado contenedor */}
+      <div className="relative w-full rounded-2xl shadow-xl overflow-hidden bg-white dark:bg-gray-800">
+        {/* Imagen de fondo posicionada detrás */}
+        <img
+          src={fondo}
+          alt="Fondo decorativo"
+          className="absolute inset-0 w-full h-full object-cover opacity-100 pointer-events-none select-none z-0"
+        />
 
-          {/* Tarjeta para la Tarea */}
-          {task ? (
-            <div className="bg-white shadow rounded-lg overflow-hidden">
-              <div className="bg-blue-300 px-4 py-2 border-b">
-                <h3 className="text-lg font-semibold">Tarea Más Cercana</h3>
-              </div>
-              <div className="p-4">
-                <h5 className="text-lg font-bold mb-2">Tarea: {task.titulo}</h5>
-                <p className="mb-2">{task.descripcion == "" ? "No hay descripción." : "Descripción: " + task.descripcion}</p>
-                <p>
-                  <strong>Fecha Límite:</strong> {formatDate(task.fechaLimite)}
-                </p>
-                <button type="button" onClick={()=>navigate("/tareas")}  className="p-1 m-1 rounded-lg bg-blue-200 hover:bg-blue-100">
-                  Ver Todos
-                </button>
-              </div>
+        {/* Contenido del dashboard */}
+        <div className="relative z-10 p-6 h-[80vh]">
+          {/* Banner de bienvenida */}
+          <div className="bg-white/100 dark:bg-gray-800/100 rounded-xl shadow p-6 mb-6 border">
+            <h1 className="text-3xl font-bold">¡Hola, {user?.nombre} 👋!</h1>
+            <p className="text-gray-600 dark:text-gray-300">Bienvenido de nuevo a Atomic. Organiza tu día y mantente al tanto de tus actividades.</p>
+          </div>
+
+          {/* Tarjetas principales */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Usuario */}
+            <div className="bg-white/100 dark:bg-gray-800/90 rounded-xl shadow p-5 flex flex-col items-center text-center border">
+              <img src={`/${user?.imagen}`} alt="Avatar" className="w-24 h-24 rounded-full object-cover mb-4" />
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">{user?.nombreUsuario}</h3>
+              <p className="text-gray-500 dark:text-gray-300">{user?.ocupacion}</p>
+              <p className="text-gray-400 text-sm mt-1">{user?.correo}</p>
             </div>
-          ) : (
-            <div className="bg-blue-100 border border-blue-200 text-blue-800 px-4 py-2 rounded">
-              Aun no hay tareas
-              <button type="button" onClick={()=>navigate("/tareas")} className="p-1 m-1 rounded-lg bg-blue-200 hover:bg-blue-100">
-                  Agrega una nueva!
-              </button>
+
+            {/* Evento más cercano */}
+            <div className="bg-white/100 dark:bg-gray-800/90 rounded-xl shadow p-5 border">
+              <h3 className="text-lg font-bold mb-2 text-gray-800 dark:text-gray-100">📅 Evento más cercano</h3>
+              {event ? (
+                <>
+                  <p className="font-semibold text-gray-700 dark:text-gray-200">Evento: {event.title || event.titleEvent || "Sin título"}</p>
+                  <p className="text-gray-600 dark:text-gray-300">{event.descripcion || "Sin descripción."}</p>
+                  <p className="text-sm text-gray-500">Inicio: {formatDate(event.fechaInicio)}</p>
+                  <p className="text-sm text-gray-500">Fin: {formatDate(event.fechaFin)}</p>
+                  <p className="text-sm text-gray-500">Etiqueta: {event.etiqueta}</p>
+                  <button onClick={() => navigate("/calendario")} className="mt-3 px-3 py-1 bg-blue-200 rounded hover:bg-blue-100">
+                    Ver todos
+                  </button>
+                </>
+              ) : (
+                <p className="text-gray-500">No hay eventos registrados.</p>
+              )}
             </div>
-          )}
+
+            {/* Tarea más cercana */}
+            <div className="bg-white/100 dark:bg-gray-800/90 rounded-xl shadow p-5 border">
+              <h3 className="text-lg font-bold mb-2 text-gray-800 dark:text-gray-100">📝 Tarea más cercana</h3>
+              {task ? (
+                <>
+                  <p className="font-semibold text-gray-700 dark:text-gray-200">Tarea: {task.titulo}</p>
+                  <p className="text-gray-600 dark:text-gray-300">{task.descripcion || "Sin descripción."}</p>
+                  <p className="text-sm text-gray-500">Fecha límite: {formatDate(task.fechaLimite)}</p>
+                  <button onClick={() => navigate("/tareas")} className="mt-3 px-3 py-1 bg-blue-200 rounded hover:bg-blue-100">
+                    Ver todas
+                  </button>
+                </>
+              ) : (
+                <p className="text-gray-500">No hay tareas registradas.</p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

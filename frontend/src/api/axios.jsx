@@ -15,13 +15,13 @@ API.interceptors.request.use((config) => {
 API.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Aquí puedes detectar errores globales, por ejemplo token expirado
+
     if (error.response?.status === 401) {
       console.warn('Token expirado o inválido');
-      // Aquí podrías redirigir al login si quieres:
+
       window.location.href = '/login';
     }
-    return Promise.reject(error); // Reenvía el error para que el frontend lo maneje
+    return Promise.reject(error);
   }
 );
 

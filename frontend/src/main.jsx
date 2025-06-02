@@ -5,7 +5,7 @@ import App from './App';
 import "./index.css";
 import "swiper/swiper-bundle.css";
 import "simplebar-react/dist/simplebar.min.css";
-import { ThemeProvider } from './context/ThemeContext.jsx';
+
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { BrowserRouter } from "react-router-dom"; 
 
@@ -14,9 +14,7 @@ root.render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <ThemeProvider>
           <App />
-        </ThemeProvider>
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>

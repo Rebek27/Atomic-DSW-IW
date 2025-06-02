@@ -13,6 +13,7 @@ import VerificarCuenta from "./services/VerificarCuenta";
 import ResetPassword from "./components/loginReg/ResetPassword";
 import SolicitarRecuperacion from "./components/loginReg/SolicitarRecuperacion";
 import HabitManager from "./pages/Habitos";
+import Faq from "./pages/Faq";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./index.css";
@@ -43,6 +44,7 @@ function App() {
             <Route index path="/habitos" element={<HabitManager />} />
             <Route index path="/tareas" element={<Tareas />} />
             <Route index path="/profile" element={<Perfil />} />
+            <Route index path="/faq" element={<Faq />} />
           </Route>
         </Route>
 

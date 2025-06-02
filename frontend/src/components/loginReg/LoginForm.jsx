@@ -2,11 +2,13 @@ import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { loginRequest } from "../../services/auth/authService";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
+
 // import { useAuth } from "../hooks/useAuth";
 
 export default function LoginForm() {
   const { login } = useAuth();
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   //const [error,setError] = useState("");
   const [correo, setCorreo] = useState("");
   const [contrasena, setContrasena] = useState("");
@@ -22,7 +24,8 @@ export default function LoginForm() {
 
       navigate("/home");
     } catch (err) {
-      alert(err.response?.data.mensaje.output.payload.message);
+      const mensaje = err.response?.data?.mensaje?.output?.payload?.message || "Error al iniciar sesión";
+      toast.error(mensaje);
       setLoading(false);
     }
   };
