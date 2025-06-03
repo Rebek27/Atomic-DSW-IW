@@ -94,6 +94,7 @@ const MiCalendario = () => {
         ...eventos,
         nuevoEvento,
       ]);
+       await fetchEventos();
       console.log('Eventos: ', eventos);
     } catch (error) {
       console.log(error);
@@ -110,6 +111,7 @@ const MiCalendario = () => {
           evento.idEvento === eventoEditado.id ? { ...evento, ...eventoEditado } : evento
         )
       );
+       await fetchEventos();
     } catch (error) {
       console.log(error);
     }
