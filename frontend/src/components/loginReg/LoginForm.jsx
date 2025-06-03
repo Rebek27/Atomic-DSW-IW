@@ -48,7 +48,7 @@ export default function LoginForm() {
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
               <img
                 alt="Atomic"
-                src="src/assets/Logo/AtomicCirculo.png"
+                src="../../assets/Logo/AtomicCirculo.png"
                 className="mx-auto h-20 w-20 aspect-4/2 md:aspect-square"
               />
               <h2 className="mt-0 text-center text-2xl/9 font-bold tracking-tight text-inherit">

@@ -74,7 +74,7 @@ export default function SignUpForm() {
             <div className="mb-2 sm:mx-auto sm:w-full sm:max-w-sm">
               <img
                 alt="Atomic"
-                src="src/assets/Logo/AtomicCirculo.png"
+                src="../../assets/Logo/AtomicCirculo.png"
                 className="flex mb-3 mx-auto h-20 w-20"
               />
               <h2 className="mb-3 text-center text-2xl font-bold tracking-tight text-inherit">
