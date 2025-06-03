@@ -1,9 +1,11 @@
-import axios from 'axios';
+import axios from 'axios'; // Importamos Axios para hacer peticiones HTTP
 
+// Creamos una instancia personalizada de Axios con una URL base
 const API = axios.create({
   baseURL: import.meta.env.VITE_API_BASE || 'http://localhost:3020/atom',
 });
 
+// Interceptor de solicitudes: se ejecuta antes de enviar cada petición
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem('sToken');
   if (token) {
@@ -12,6 +14,7 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
+// Interceptor de respuestas: se ejecuta al recibir una respuesta o error
 API.interceptors.response.use(
   (response) => response,
   (error) => {

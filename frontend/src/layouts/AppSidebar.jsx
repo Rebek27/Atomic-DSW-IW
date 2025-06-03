@@ -13,6 +13,8 @@ import {
 
 import { useSidebar } from "../context/SidebarContext";
 
+
+// Definición de las rutas principales del menú
 const navItems = [
   {
     icon: <FiGrid />,
@@ -50,9 +52,11 @@ const othersItems = [
 ];
 
 const AppSidebar = () => {
+    // Obtención del estado global del sidebar
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const location = useLocation();
 
+    // Estados locales para gestionar submenús
   const [openSubmenu, setOpenSubmenu] = useState(null);
   const [subMenuHeight, setSubMenuHeight] = useState({});
   const subMenuRefs = useRef({});
@@ -62,6 +66,7 @@ const AppSidebar = () => {
     [location.pathname]
   );
 
+    // Detectar si algún submenú debe estar abierto según la ruta actual
   useEffect(() => {
     let submenuMatched = false;
     ["main", "others"].forEach((menuType) => {
@@ -86,6 +91,7 @@ const AppSidebar = () => {
     }
   }, [location, isActive]);
 
+    // Calcular la altura de submenús al abrirlos
   useEffect(() => {
     if (openSubmenu !== null) {
       const key = `${openSubmenu.type}-${openSubmenu.index}`;
@@ -111,6 +117,8 @@ const AppSidebar = () => {
     });
   };
 
+
+  // Renderizar los items del menú con submenús opcionales
   const renderMenuItems = (items, menuType) => (
     <ul className="flex flex-col gap-4">
       {items.map((nav, index) => {
@@ -147,6 +155,9 @@ const AppSidebar = () => {
                 </Link>
               )
             )}
+
+
+            {/* Subitems visibles solo si el sidebar está expandido */}
             {nav.subItems && showText && (
               <div
                 ref={(el) => {
@@ -177,6 +188,7 @@ const AppSidebar = () => {
     </ul>
   );
 
+    // Renderizado del componente visual del sidebar
   return (
     <aside
       className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
@@ -191,13 +203,15 @@ const AppSidebar = () => {
         lg:translate-x-0`}
       onMouseEnter={() => !isExpanded && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      
     >
+           {/* Logo */}
       <div
         className={`py-8 flex ${
           !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
         }`}
       >
-        <Link to="/">
+        <Link to="/home">
           {isExpanded || isHovered || isMobileOpen ? (
             <>
               <img
@@ -225,6 +239,8 @@ const AppSidebar = () => {
           )}
         </Link>
       </div>
+
+        {/* Menú principal */}
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
         <nav className="mb-6">
           <div className="flex flex-col gap-4">

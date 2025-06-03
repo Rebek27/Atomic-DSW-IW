@@ -1,9 +1,11 @@
-// src/components/EditarCampoModal.jsx
 import React, { useState, useEffect } from 'react';
 
 const EditarCampoModal = ({ isOpen, onClose, onSave, label, valorActual }) => {
+   // Estado para el nuevo valor que el usuario va escribiendo
   const [valor, setValor] = useState('');
 
+
+    // Actualiza el valor del input cada vez que cambia el valor actual
   useEffect(() => {
     setValor(valorActual || '');
   }, [valorActual]);
@@ -12,6 +14,7 @@ const EditarCampoModal = ({ isOpen, onClose, onSave, label, valorActual }) => {
     onSave(valor);
   };
 
+  // Si el modal no está abierto, no renderiza nada
   if (!isOpen) return null;
 
   return (

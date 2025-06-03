@@ -3,6 +3,8 @@ import { updateTask, deleteTask } from "../../services/tasks/taskService.jsx";
 import { FaTrash, FaSave } from "react-icons/fa";
 import { toast } from "react-toastify";
 
+
+// Componente que muestra y permite editar los detalles de una tarea
 const DetalleTarea = ({
   tarea,
   cerrarPanel,
@@ -12,6 +14,8 @@ const DetalleTarea = ({
   const [descripcion, setDescripcion] = useState("");
   const [titulo, setTitulo] = useState("");
 
+
+   // Cuando cambia la tarea seleccionada, se actualizan los campos locales
   useEffect(() => {
     if (tarea) {
       setDescripcion(tarea.descripcion || "");
@@ -19,6 +23,7 @@ const DetalleTarea = ({
     }
   }, [tarea]);
 
+    // Actualiza los datos de la tarea
   const handleActualizar = async () => {
     try {
       await updateTask(tarea.idTarea, { ...tarea, titulo, descripcion }, tarea.correo);
@@ -31,6 +36,7 @@ const DetalleTarea = ({
     }
   };
 
+   // Elimina la tarea actual
   const handleEliminar = async () => {
     toast.info("Eliminando tarea...");
     try {

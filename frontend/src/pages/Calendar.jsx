@@ -21,6 +21,9 @@ const etiquetas = {
   otro: "#949494", // Gris
 };
 
+
+
+// Traducción de textos para el calendario
 const messages = {
   allDay: "Todo el día",
   previous: "Anterior",
@@ -46,7 +49,7 @@ const MiCalendario = () => {
   const [filtroTiempo, setFiltroTiempo] = useState("todos");
 
 
-
+ // Cargar eventos desde el backend
   useEffect(() => {
     async function fetchData() {
       try {
@@ -117,6 +120,7 @@ const MiCalendario = () => {
     }
   };
 
+    // Eliminar evento con confirmación
   const manejarEliminarEvento = async (id) => {
     const confirmacion = window.confirm("¿Estás seguro de que quieres eliminar este evento?");
     if (confirmacion) {

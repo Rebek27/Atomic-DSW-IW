@@ -2,12 +2,17 @@ import { useState } from 'react';
 import dayjs from 'dayjs';
 
 const ModalCalendario = ({ onAgregarEvento, cerrarModal }) => {
+
+   // Estados locales para los campos del formulario
   const [titulo, setTitulo] = useState('');
   const [inicio, setInicio] = useState('');
   const [fin, setFin] = useState('');
   const [etiqueta, setEtiqueta] = useState('personal');
   const [descripcion, setDescripcion] = useState('');
 
+
+  
+ //Maneja el envío del formulario.
   const manejarEnvio = (e) => {
     e.preventDefault();
     const nuevoEvento = {
@@ -20,6 +25,7 @@ const ModalCalendario = ({ onAgregarEvento, cerrarModal }) => {
       recordatorio: false, //CHECAR ESTO
     };
 
+     // Ejecuta función del componente padre para agregar el evento
     onAgregarEvento(nuevoEvento);
     cerrarModal();
   };

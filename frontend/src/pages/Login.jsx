@@ -4,6 +4,7 @@ import { HiArrowCircleLeft } from "react-icons/hi";
 import LoginForm from "../components/loginReg/LoginForm";
 
 export default function Login() {
+    // Estilo de fondo aplicado al contenedor principal
   const bgStyle = {
     backgroundImage: `url(${fondo})`,
     backgroundRepeat: "no-repeat",
@@ -19,6 +20,9 @@ export default function Login() {
 
         <LoginForm />
 
+
+
+        {/* Botón de regreso a la página principal */}
         <button
           type="button"
           className="absolute bottom-6 left-6 text-white bg-gradient-to-r from-cyan-500 to-blue-500 

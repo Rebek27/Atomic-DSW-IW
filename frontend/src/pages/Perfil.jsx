@@ -11,11 +11,13 @@ import CambiarContrasena from '../components/modales/Perfil/CambiarContraseña';
 const Perfil = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  // Estados para manejo de modales y formularios
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTipo, setModalTipo] = useState(null);
   const [modalLabel, setModalLabel] = useState('');
   const [valorActual, setValorActual] = useState('');
-  const [passChange,setPassChange] = useState(false);
+  const [passChange, setPassChange] = useState(false);
 
 
   const handleLogout = () => {
@@ -23,21 +25,24 @@ const Perfil = () => {
     navigate('/signin');
   };
 
+  // Lógica para eliminar la cuenta del usuario
   const handleDeleteAccount = async () => {
     const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.");
     if (confirmDelete) {
       try {
-        // Aquí deberías llamar a tu servicio para eliminar la cuenta
         await eliminarCuenta();
         console.log("Eliminar cuenta");
-      logout();
-      navigate('/signin');
+        logout();
+        navigate('/signin');
       } catch (error) {
-        console.error("Error al eliminar la cuenta",error);
+        console.error("Error al eliminar la cuenta", error);
       }
     }
   };
 
+
+
+  // Cambiar imagen del avatar
   const handleAvatarChange = async (avatarFile) => {
     try {
       await cambiarImagen({ correo: user.correo, imagen: `src/assets/profile/${avatarFile}` });
@@ -48,10 +53,12 @@ const Perfil = () => {
     }
   }
 
-  const handlePassChange = ()=>{
+
+  // Abrir modal de cambio de contraseña
+  const handlePassChange = () => {
     setPassChange(true);
   }
-  const closePassModal = () =>{
+  const closePassModal = () => {
     setPassChange(false);
   }
 
@@ -66,6 +73,8 @@ const Perfil = () => {
     setValorActual('');
   };
 
+
+  // Guardar el nuevo valor del campo editado
   const guardarCampo = async (nuevoValor) => {
     try {
       switch (modalTipo) {
@@ -94,7 +103,7 @@ const Perfil = () => {
 
   return (
     <div className="p-6 space-y-6">
-      {/* Profile Section */}
+      {/* Perfil*/}
       <section className="bg-white rounded-xl shadow p-6 flex flex-col md:flex-row items-center justify-between">
         <div className="flex items-center space-x-4">
           <img
@@ -118,13 +127,15 @@ const Perfil = () => {
         </div>
       </section>
 
+
+      {/* Modal para seleccionar nuevo avatar */}
       <AvatarModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         onSelect={handleAvatarChange}
       />
 
-      {/* Personal Information Section */}
+      {/* Información editable del perfil */}
       <section className="bg-white rounded-xl shadow p-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-semibold">Información personal</h3>
@@ -178,6 +189,7 @@ const Perfil = () => {
         </div>
       </section >
 
+      {/* Modal para editar nombre, usuario, etc. */}
       <EditarCampoModal
         isOpen={!!modalTipo}
         onClose={cerrarModal}

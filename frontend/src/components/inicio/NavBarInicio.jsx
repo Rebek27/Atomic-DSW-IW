@@ -59,6 +59,7 @@ const NavbarInicio = () => {
         {mobileDrawerOpen && (
           <div className="fixed right-0 top-0 h-screen z-20 bg-neutral-900 w-3/4 p-6 flex flex-col items-center lg:hidden">
             <ul className="space-y-4">
+              
               {navItems.map((item, index) => (
                 <li key={index}>
                   <a href={item.href} className="text-white hover:text-[#7c64fc]">

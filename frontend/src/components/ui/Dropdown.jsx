@@ -1,9 +1,25 @@
 import React, { useEffect, useRef } from "react";
 
+
+
+/**
+ * Componente Dropdown reutilizable.
+ * Muestra un menú desplegable flotante y lo cierra automáticamente cuando se hace clic fuera de él.
+ *
+ * Props:
+ * - isOpen (boolean): Indica si el dropdown debe mostrarse.
+ * - onClose (function): Función que se ejecuta para cerrar el dropdown (por ejemplo, al hacer clic fuera).
+ * - children (ReactNode): Contenido del dropdown (usualmente opciones o enlaces).
+ * - className (string): Clases adicionales para personalizar el estilo del dropdown.
+ */
+
+
 export const Dropdown = ({ isOpen, onClose, children, className = "" }) => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
+
+     // Función para manejar clics fuera del dropdown
     const handleClickOutside = (event) => {
       if (
         dropdownRef.current &&
@@ -14,8 +30,10 @@ export const Dropdown = ({ isOpen, onClose, children, className = "" }) => {
       }
     };
 
+      // Agrega el listener cuando el componente se monta
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
+       // Limpia el listener cuando el componente se desmonta
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [onClose]);

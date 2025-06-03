@@ -1,7 +1,9 @@
 import API from '../../api/axios';
 
+//Crear evento
 export const createEvent = async (evento) => API.post('/event/add',evento);
 
+//ObtenerEventos
 export const getEventList = async () => API.get('/events');
 
 //Detalles de un solo evento

@@ -1,8 +1,8 @@
 import React from "react";
 import HeroPng from "../../assets/images/AtomicHero.png"
-import { BiPlayCircle } from "react-icons/bi";
 
-const Hero = ({id}) => {
+
+const Hero = ({id}) => { //ID ES PARA NAVEGAR EN LA LANDING PAGE
   return (
     <>
       <div id={id} className="py-18 sm:py-10 dark:bg-[#f2f2f2] flex justify-center items-centerr dark:text-black duration-300 overflow-hidden">

@@ -1,19 +1,22 @@
 
-
-// components/HabitManager.jsx
 import React, { useState } from "react";
 import HabitCard from "../components/habitos/HabitCard";
 import { v4 as uuid } from "uuid";
 
 const HabitManager = () => {
+
+  // Estado para el formulario (nombre, icono y frecuencia)
   const [habits, setHabits] = useState([]);
   const [form, setForm] = useState({ nombre: "", icono: "", frecuencia: "diario" });
   const [editId, setEditId] = useState(null);
 
+
+  // Manejador de cambios en los inputs del formulario
   const handleInputChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // Manejador de envío del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.nombre || !form.icono) return;
@@ -22,6 +25,7 @@ const HabitManager = () => {
       setHabits(prev => prev.map(h => h._id === editId ? { ...h, ...form } : h));
       setEditId(null);
     } else {
+      // Si es un nuevo hábito
       setHabits(prev => [
         ...prev,
         {
@@ -45,11 +49,14 @@ const HabitManager = () => {
     }
   };
 
+  // Cargar los datos del hábito en el formulario para edición
   const handleEdit = (habit) => {
     setForm({ nombre: habit.nombre, icono: habit.icono, frecuencia: habit.frecuencia });
     setEditId(habit._id);
   };
 
+
+  // Marcar hábito como completado hoy y actualizar progreso y rachas
   const handleCompleteToday = (habitId) => {
     const hoy = new Date();
     setHabits(prev => prev.map(h => {
@@ -69,6 +76,9 @@ const HabitManager = () => {
 
   return (
     <div className="p-6 max-w-6xl mx-auto rounded-2xl border border-gray-300 bg-white shadow-md">
+
+
+      {/* Formulario para agregar/editar hábito */}
       <form onSubmit={handleSubmit} className="space-y-4 mb-8">
         <h2 className="text-xl font-semibold text-gray-800">{editId ? "Editar hábito" : "Nuevo hábito"}</h2>
         <input
@@ -102,6 +112,9 @@ const HabitManager = () => {
         </button>
       </form>
 
+
+
+      {/* Listado de hábitos actuales */}
       <div className="grid gap-4 md:grid-cols-2">
         {habits.map((habit) => (
           <div key={habit._id} className="relative">

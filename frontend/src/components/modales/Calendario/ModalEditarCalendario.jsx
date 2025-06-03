@@ -2,6 +2,11 @@ import { useState } from 'react';
 import dayjs from 'dayjs';
 
 
+/**
+ * Componente ModalEditarCalendario
+ * Permite editar un evento ya existente en el calendario.
+ */
+
 const ModalEditarCalendario = ({ eventoEditar, onEditarEvento, cerrarModal }) => {
   const [titulo, setTitulo] = useState(eventoEditar.title);
   const [inicio, setInicio] = useState(dayjs(eventoEditar.fechaInicio).format('YYYY-MM-DDTHH:mm'));
@@ -9,6 +14,11 @@ const ModalEditarCalendario = ({ eventoEditar, onEditarEvento, cerrarModal }) =>
   const [etiqueta, setEtiqueta] = useState(eventoEditar.etiqueta);
   const [descripcion, setDescripcion] = useState(eventoEditar.descripcion);
 
+
+ /**
+   * Maneja el envío del formulario
+   * Convierte las fechas y envía el nuevo objeto actualizado al componente padre
+   */
   const manejarEnvio = (e) => {
     e.preventDefault();
     const evento = {
@@ -20,7 +30,7 @@ const ModalEditarCalendario = ({ eventoEditar, onEditarEvento, cerrarModal }) =>
       descripcion: descripcion,
     };
 
-    onEditarEvento(evento);
+    onEditarEvento(evento);// Llama a la función del padre para guardar cambios 
     cerrarModal();
   };
 

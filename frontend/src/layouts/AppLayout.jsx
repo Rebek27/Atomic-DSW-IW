@@ -2,8 +2,14 @@ import React from "react";
 import { SidebarProvider, useSidebar } from "../context/SidebarContext";
 import { Outlet } from "react-router";
 import AppHeader from "./AppHeader";
-import Backdrop from "./Backdrop";
 import AppSidebar from "./AppSidebar";
+
+
+/**
+ * Componente LayoutContent
+ * Estructura principal del layout de la aplicación (contenedor principal).
+ * Usa el contexto del sidebar para ajustar el diseño dinámicamente según su estado.
+ */
 
 const LayoutContent = () => {
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
@@ -27,6 +33,12 @@ const LayoutContent = () => {
   );
 };
 
+
+/**
+ * Componente AppLayout
+ * Proveedor general del contexto del sidebar para toda la app.
+ * Encapsula el layout completo dentro del SidebarProvider.
+ */
 const AppLayout = () => {
   return (
     <SidebarProvider>

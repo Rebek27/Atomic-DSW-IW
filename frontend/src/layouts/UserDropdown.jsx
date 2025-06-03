@@ -7,27 +7,35 @@ import { useAuth } from '../context/AuthContext'; // ruta según tu proyecto
 
 
 export default function UserDropdown() {
+  // Estado para controlar si el dropdown está abierto o cerrado
   const [isOpen, setIsOpen] = useState(false);
+
+  // Obtenemos las funciones y datos del contexto de autenticación
   const { logout } = useAuth();
   const { user } = useAuth();
   const navigate = useNavigate();
 
+
+  // Maneja el cierre de sesión
   const handleLogout = (e) => {
     e.preventDefault();        // evita que navegue de inmediato
     logout();                  // elimina el token y limpia el contexto
     navigate('/');       // redirige manualmente
   };
 
+  // Alterna la visibilidad del dropdown
   function toggleDropdown() {
     setIsOpen(!isOpen);
   }
 
+  // Cierra el dropdown
   function closeDropdown() {
     setIsOpen(false);
   }
 
   return (
     <div className="relative">
+      {/* Botón que activa el dropdown */}
       <button
         onClick={toggleDropdown}
         className="flex items-center text-gray-700 dropdown-toggle dark:text-gray-400"
@@ -62,10 +70,10 @@ export default function UserDropdown() {
       >
         <div>
           <span className="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-          {user?.nombreUsuario}
+            {user?.nombreUsuario}
           </span>
           <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-          {user?.correo}
+            {user?.correo}
           </span>
         </div>
 

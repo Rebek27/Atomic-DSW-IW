@@ -8,6 +8,10 @@ export default function SignUpForm() {
   const navigate = useNavigate();
   const [mensaje, setMensaje] = useState("");
 
+  /**
+  * Función auxiliar para calcular la edad a partir de la fecha de nacimiento
+  */
+
   function calcularEdad(fechaNacimiento) {
     const hoy = new Date();
     const nacimiento = new Date(fechaNacimiento);
@@ -19,6 +23,8 @@ export default function SignUpForm() {
     return edad;
   }
 
+
+  //Maneja el envío del formulario de registro
   async function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -36,6 +42,7 @@ export default function SignUpForm() {
     data.edad = calcularEdad(data.edad);
 
     try {
+      // Enviar solicitud de registro
       const res = await registerRequest(data);
       toast.success("Registro exitoso. Revisa tu correo para verificar tu cuenta.");
       setTimeout(() => {
@@ -47,6 +54,8 @@ export default function SignUpForm() {
     }
   }
 
+  // Mostrar mensaje de validación con toast (si existe)
+
   useEffect(() => {
     if (mensaje) {
       toast.info(mensaje);
@@ -55,6 +64,7 @@ export default function SignUpForm() {
 
   return (
     <>
+      {/* Contenedor externo con animación decorativa */}
       <div className="relative z-10 flex cursor-pointer items-center overflow-hidden rounded-xl border border-slate-1000 p-[1.9px] justify-center ">
         <div
           className="animate-rotate absolute inset-0 h-full w-full rounded-full bg-[conic-gradient(#0ea5e9_20deg,transparent_120deg)]"
@@ -72,6 +82,8 @@ export default function SignUpForm() {
               </h2>
             </div>
 
+
+            {/* Formulario de registro */}
             <div className="mt-1 sm:mx-auto sm:w-full sm:max-w-xl">
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">

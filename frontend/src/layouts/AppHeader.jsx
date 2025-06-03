@@ -1,9 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router";
 import { useSidebar } from "../context/SidebarContext";
-// import NotificationDropdown from "../components/header/NotificationDropdown";
 import UserDropdown from "./UserDropdown";
 
+
+/**
+ * Componente AppHeader
+ * Renderiza la barra superior de la aplicación, que incluye:
+ * - Botón para abrir/cerrar el sidebar
+ * - Acciones de usuario (UserDropdown)
+ * - Accesibilidad con combinación de teclas (Ctrl+K)
+ */
 const AppHeader = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
@@ -16,25 +22,7 @@ const AppHeader = () => {
     }
   };
 
-  const toggleApplicationMenu = () => {
-    setApplicationMenuOpen(!isApplicationMenuOpen);
-  };
 
-  const inputRef = useRef(null);
-
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if ((event.metaKey || event.ctrlKey) && event.key === "k") {
-        event.preventDefault();
-        inputRef.current?.focus();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
 
   return (
     <header className="sticky top-0 flex w-full bg-white border-gray-200 z-99999 dark:border-gray-800 dark:bg-gray-900 lg:border-b">
@@ -50,10 +38,10 @@ const AppHeader = () => {
           <div className="hidden lg:block">
           </div>
         </div>
+
+        {/* Sección derecha del header (menú de usuario, acciones) */}
         <div className={`${isApplicationMenuOpen ? "flex" : "hidden"} items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}>
           <div className="flex items-center gap-2 2xsm:gap-3">
-            {/* <ThemeToggleButton /> */}
-            {/* <NotificationDropdown /> */}
           </div>
           <UserDropdown />
         </div>

@@ -6,12 +6,15 @@ import user4 from "../../../assets/Logo/Atomic.png";
 import user5 from "../../../assets/Logo/Atomic.png";
 import user6 from "../../../assets/Logo/Atomic.png";
 
+
+// Array de elementos de navegación para anclas en la landing page
 export const navItems = [
   { label: "¿Qué es?", href: "#hero" },
   { label: "Beneficios", href: "#beneficios" },
   { label: "Testimonios", href: "#testimonios" }
 ];
 
+// Lista de testimonios de usuarios que han usado la aplicación "Atomic"
   export const testimonials = [
     {
       user: "Carlos R.",

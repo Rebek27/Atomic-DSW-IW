@@ -8,8 +8,14 @@ import fondo from '../assets/images/Fondo1.png';
 const Home = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  // Estados locales para el evento y tarea más cercanos
   const [event, setEvent] = useState(null);
   const [task, setTask] = useState(null);
+
+  // --- Funciones utilitarias  fechas ---
+
+  // Convertir string o MongoDB $date a objeto Date
 
   const parseDate = (dateField) => {
     if (dateField !== null && typeof dateField === 'object' && dateField.$date) {
@@ -23,6 +29,8 @@ const Home = () => {
     return isNaN(date.getTime()) ? 'Fecha inválida' : date.toLocaleDateString();
   };
 
+
+  // --- Cargar eventos y tareas al montar el componente ---
   useEffect(() => {
     const obtenerDatos = async () => {
       try {
@@ -32,6 +40,7 @@ const Home = () => {
         const tareas = res2.data;
         const fechaActual = new Date();
 
+        // Buscar tarea más cercana según fecha límite
         if (tareas && tareas.length > 0) {
           const tareaMasCercana = tareas.reduce((prev, curr) => {
             const prevDate = parseDate(prev.fechaLimite);
@@ -41,6 +50,7 @@ const Home = () => {
           setTask(tareaMasCercana);
         }
 
+        // Buscar evento más cercano según fecha de inicio
         if (eventos && eventos.length > 0) {
           const eventoMasCercano = eventos.reduce((prev, curr) => {
             const prevDate = parseDate(prev.fechaInicio);

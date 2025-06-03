@@ -2,27 +2,32 @@ import { useEffect, useState } from "react";
 import { cambiarContrasena } from "../../../services/auth/authService";
 import { toast } from "react-toastify";
 
-const CambiarContrasena = ({onClose,isVisible}) =>{
-    const [pass,setPass] = useState('');
-    const [newPass,setNewPass] = useState('');
+const CambiarContrasena = ({ onClose, isVisible }) => {
+    const [pass, setPass] = useState('');
+    const [newPass, setNewPass] = useState('');
 
-    useEffect(()=>{
+
+    // Limpiar los campos al abrir/cerrar el modal
+    useEffect(() => {
         setPass("");
         setNewPass("");
-    },[isVisible]);
+    }, [isVisible]);
 
-    const handleSubmit = async () =>{
+
+    // Maneja el envío del formulario para cambiar la contraseña
+    const handleSubmit = async () => {
         try {
-            await cambiarContrasena({oldPass:pass,newPass:newPass});
+            await cambiarContrasena({ oldPass: pass, newPass: newPass });
             toast.success('Contraseña actualizada correctamene');
             onClose();
         } catch (error) {
             toast.error(error.response.data.mensaje.mensaje);
-            console.error('Error al cambiar la contraseña:',error);
+            console.error('Error al cambiar la contraseña:', error);
         }
     }
 
-    if(!isVisible){
+    // No renderiza nada si el modal no está visible
+    if (!isVisible) {
         return null;
     }
 

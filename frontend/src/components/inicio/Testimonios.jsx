@@ -1,13 +1,23 @@
 import { testimonials } from "./constants";
 
-const Testimonios = ({id}) => {
+/**
+ * Componente Testimonios
+ * Muestra una sección con opiniones de usuarios sobre la app "Atomic".
+ * Utiliza un diseño responsive y tarjetas individuales por testimonio.
+ */
+
+const Testimonios = ({ id }) => { //ID ES PARA NAVEGAR EN LA LANDING PAG
   return (
+
+
     <div id={id} className="py-18 sm:py-20 dark:bg-[#f2f2f2] flex justify-center items-center dark:text-black duration-300 overflow-hidden">
       <div className="container mx-auto  tracking-wide">
         <h2 className="text-3xl sm:text-2xl lg:text-5xl text-center lg:my-20 font-semibold">
           ¿Qué opinan de Atomic?
         </h2>
+
         <div className="flex flex-wrap justify-center gap-16">
+
           {testimonials.map((testimonial, index) => (
             <div key={index} className="w-full sm:w-2/3 lg:w-1/4 px-0 py-2">
               <div className="bg-white bg-white rounded-md p-5 text-sm border border-neutral-800">

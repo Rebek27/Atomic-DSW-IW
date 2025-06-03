@@ -1,6 +1,8 @@
-// src/components/AvatarModal.jsx
+
 import React from 'react';
 
+
+// Lista de nombres de archivo de avatares disponibles
 const avatars = [
   'Perfil1.png',
   'Perfil2.png',
@@ -18,6 +20,7 @@ const AvatarModal = ({ isOpen, onClose, onSelect }) => {
       <div className="bg-white p-6 rounded-xl shadow-lg max-w-md w-full">
         <h2 className="text-lg font-semibold mb-4">Selecciona tu nuevo avatar</h2>
         <div className="grid grid-cols-3 gap-4">
+          {/* Avatares disponibles */}
           {avatars.map((avatar) => (
             <img
               key={avatar}
