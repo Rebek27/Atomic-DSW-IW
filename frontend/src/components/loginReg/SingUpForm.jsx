@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { registerRequest } from "../../services/auth/authService";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Atomic from "../../assets/images/CirculoBenef.png"
 
 
 export default function SignUpForm() {
@@ -74,7 +75,7 @@ export default function SignUpForm() {
             <div className="mb-2 sm:mx-auto sm:w-full sm:max-w-sm">
               <img
                 alt="Atomic"
-                src="../../assets/Logo/AtomicCirculo.png"
+                src={Atomic}
                 className="flex mb-3 mx-auto h-20 w-20"
               />
               <h2 className="mb-3 text-center text-2xl font-bold tracking-tight text-inherit">

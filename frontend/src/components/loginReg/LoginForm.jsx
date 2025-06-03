@@ -3,6 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import { loginRequest } from "../../services/auth/authService";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import Atomic from "../../assets/Logo/AtomicCirculo.png"
 
 
 // Componente de formulario de inicio de sesión
@@ -48,7 +49,7 @@ export default function LoginForm() {
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
               <img
                 alt="Atomic"
-                src="../../assets/Logo/AtomicCirculo.png"
+                src={Atomic}
                 className="mx-auto h-20 w-20 aspect-4/2 md:aspect-square"
               />
               <h2 className="mt-0 text-center text-2xl/9 font-bold tracking-tight text-inherit">
