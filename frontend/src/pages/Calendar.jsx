@@ -49,31 +49,26 @@ const MiCalendario = () => {
   const [filtroTiempo, setFiltroTiempo] = useState("todos");
 
 
- // Cargar eventos desde el backend
+  // Cargar eventos desde el backend
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const { data } = await ES.getEventList();
-        console.log('Eventos traídos del back', data);
+    fetchEventos();
+  }, []);
 
-        const eventosFormateados = data.map((evento) => ({
-          ...evento,
-          fechaInicio: dayjs(evento.fechaInicio).toDate(),
-          fechaFin: dayjs(evento.fechaFin).toDate(),
-        }));
+  const fetchEventos = async () => {
+    try {
+      const { data } = await ES.getEventList();
+      const eventosFormateados = data.map((evento) => ({
+        ...evento,
+        fechaInicio: dayjs(evento.fechaInicio).toDate(),
+        fechaFin: dayjs(evento.fechaFin).toDate(),
+      }));
 
-        eventosFormateados.sort((a, b) => a.fechaInicio - b.fechaInicio);
-
-        if (JSON.stringify(eventos) !== JSON.stringify(eventosFormateados)) {
-          setEventos(eventosFormateados);
-        }
-      } catch (error) {
-        console.error("Error al cargar los eventos:", error);
-      }
+      eventosFormateados.sort((a, b) => a.fechaInicio - b.fechaInicio);
+      setEventos(eventosFormateados);
+    } catch (error) {
+      console.error("Error al cargar los eventos:", error);
     }
-
-    fetchData();
-  }, []); 
+  };
 
   // --- Filtro combinado de etiqueta y tiempo ---
   const eventosFiltrados = eventos.filter((evento) => {
@@ -120,7 +115,7 @@ const MiCalendario = () => {
     }
   };
 
-    // Eliminar evento con confirmación
+  // Eliminar evento con confirmación
   const manejarEliminarEvento = async (id) => {
     const confirmacion = window.confirm("¿Estás seguro de que quieres eliminar este evento?");
     if (confirmacion) {
@@ -129,6 +124,7 @@ const MiCalendario = () => {
         console.log(res);
         const eventosActualizados = eventos.filter(evento => evento.id !== id);
         setEventos(eventosActualizados);
+        await fetchEventos();
       } catch (error) {
         console.log(error);
       }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 
 
@@ -8,17 +8,28 @@ import dayjs from 'dayjs';
  */
 
 const ModalEditarCalendario = ({ eventoEditar, onEditarEvento, cerrarModal }) => {
-  const [titulo, setTitulo] = useState(eventoEditar.title);
-  const [inicio, setInicio] = useState(dayjs(eventoEditar.fechaInicio).format('YYYY-MM-DDTHH:mm'));
-  const [fin, setFin] = useState(dayjs(eventoEditar.fechaFin).format('YYYY-MM-DDTHH:mm'));
-  const [etiqueta, setEtiqueta] = useState(eventoEditar.etiqueta);
-  const [descripcion, setDescripcion] = useState(eventoEditar.descripcion);
+  const [titulo, setTitulo] = useState('');
+  const [inicio, setInicio] = useState('');
+  const [fin, setFin] = useState('');
+  const [etiqueta, setEtiqueta] = useState('');
+  const [descripcion, setDescripcion] = useState('');
 
 
- /**
-   * Maneja el envío del formulario
-   * Convierte las fechas y envía el nuevo objeto actualizado al componente padre
-   */
+  ///INICIALIZA
+  useEffect(() => {
+    if (eventoEditar) {
+      setTitulo(eventoEditar.title || '');
+      setInicio(dayjs(eventoEditar.fechaInicio).format('YYYY-MM-DDTHH:mm'));
+      setFin(dayjs(eventoEditar.fechaFin).format('YYYY-MM-DDTHH:mm'));
+      setEtiqueta(eventoEditar.etiqueta || 'otro');
+      setDescripcion(eventoEditar.descripcion || '');
+    }
+  }, [eventoEditar]);
+
+  /**
+    * Maneja el envío del formulario
+    * Convierte las fechas y envía el nuevo objeto actualizado al componente padre
+    */
   const manejarEnvio = (e) => {
     e.preventDefault();
     const evento = {
@@ -73,7 +84,7 @@ const ModalEditarCalendario = ({ eventoEditar, onEditarEvento, cerrarModal }) =>
           onChange={(e) => setEtiqueta(e.target.value)}
           className="w-full p-2 border rounded-md"
         >
-          <option value="importante">Importante</option>  
+          <option value="importante">Importante</option>
           <option value="personal">Personal</option>
           <option value="medico">Medico</option>
           <option value="estudio">Estudio</option>
