@@ -4,6 +4,7 @@ import { Dropdown } from "../components/ui/Dropdown";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router";
 import { useAuth } from '../context/AuthContext'; // ruta según tu proyecto
+import { avatarMap } from '../assets/profile/AvatarMap';
 
 
 export default function UserDropdown() {
@@ -41,7 +42,11 @@ export default function UserDropdown() {
         className="flex items-center text-gray-700 dropdown-toggle dark:text-gray-400"
       >
         <span className="mr-3 overflow-hidden rounded-full h-11 w-11">
-          <img src={`/${user?.imagen}`} alt="User" />
+          <img
+            src={avatarMap[user?.imagen] || avatarMap['Perfil1.png']}
+            alt="User"
+            className="object-cover h-full w-full rounded-full"
+          />
         </span>
         <span className="block mr-1 font-medium text-theme-sm">{user?.nombreUsuario}</span>
         <svg
