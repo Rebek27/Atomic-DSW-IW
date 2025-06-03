@@ -6,6 +6,7 @@ import AvatarModal from '../components/modales/Perfil/AvatarModal'
 import { FaPen } from 'react-icons/fa6';
 import EditarCampoModal from '../components/modales/Perfil/EditarCampoModal';
 import CambiarContrasena from '../components/modales/Perfil/CambiarContraseña';
+import { avatarMap } from '../assets/profile/AvatarMap';
 
 
 const Perfil = () => {
@@ -43,15 +44,15 @@ const Perfil = () => {
 
 
   // Cambiar imagen del avatar
-  const handleAvatarChange = async (avatarFile) => {
+  const handleAvatarChange = async (avatarFileName) => {
     try {
-      await cambiarImagen({ correo: user.correo, imagen: {avatarFile} });
+      await cambiarImagen({ correo: user.correo, imagen: avatarFileName });
       setModalOpen(false);
-      window.location.reload(); // o puedes actualizar el contexto si prefieres
+      window.location.reload();
     } catch (error) {
       console.error("Error al cambiar avatar:", error);
     }
-  }
+  };
 
 
   // Abrir modal de cambio de contraseña
@@ -106,9 +107,9 @@ const Perfil = () => {
       {/* Perfil*/}
       <section className="bg-white rounded-xl shadow p-6 flex flex-col md:flex-row items-center justify-between">
         <div className="flex items-center space-x-4">
-          <img
-            src={`${user?.imagen}`}
-            alt="Perfil Foto 1"
+           <img
+            src={avatarMap[user?.imagen] || avatarMap['Perfil1.png']} // fallback
+            alt="Avatar"
             className="w-20 h-20 rounded-full object-cover"
           />
           <div>

@@ -1,21 +1,6 @@
 
 import React from 'react';
-import avatar1 from '../../../assets/profile/Perfil1.png'
-import avatar2 from '../../../assets/profile/Perfil2.png'
-import avatar3 from '../../../assets/profile/Perfil3.png'
-import avatar4 from '../../../assets/profile/Perfil4.png'
-import avatar5 from '../../../assets/profile/Perfil5.png'
-import avatar6 from '../../../assets/profile/Perfil6.png'
-
-// Lista de nombres de archivo de avatares disponibles
-const avatars = [
-  avatar1,
-  avatar2,
-  avatar3,
-  avatar4,
-  avatar5,
-  avatar6,
-];
+import { avatarMap, avatarList } from '../../../assets/profile/AvatarMap.js';
 
 const AvatarModal = ({ isOpen, onClose, onSelect }) => {
   if (!isOpen) return null;
@@ -26,13 +11,13 @@ const AvatarModal = ({ isOpen, onClose, onSelect }) => {
         <h2 className="text-lg font-semibold mb-4">Selecciona tu nuevo avatar</h2>
         <div className="grid grid-cols-3 gap-4">
           {/* Avatares disponibles */}
-          {avatars.map((avatar) => (
+          {avatarList.map((avatarFileName) => (
             <img
-              key={avatar}
-              src={avatar}
-              alt={avatar}
+              key={avatarFileName}
+              src={avatarMap[avatarFileName]}
+              alt={avatarFileName}
               className="w-20 h-20 rounded-full object-cover cursor-pointer hover:scale-105 transition-transform border-2 hover:border-blue-500"
-              onClick={() => onSelect(avatar)}
+              onClick={() => onSelect(avatarFileName)} // <- Solo mandas el nombre
             />
           ))}
         </div>
