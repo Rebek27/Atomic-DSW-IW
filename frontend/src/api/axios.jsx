@@ -2,7 +2,7 @@ import axios from 'axios'; // Importamos Axios para hacer peticiones HTTP
 
 // Creamos una instancia personalizada de Axios con una URL base
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE || 'http://localhost:3020/atom',
+  baseURL: 'https://atomicrestapi.onrender.com/atom',
 });
 
 // Interceptor de solicitudes: se ejecuta antes de enviar cada petición
