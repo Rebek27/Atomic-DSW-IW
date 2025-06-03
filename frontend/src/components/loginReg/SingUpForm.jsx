@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { registerRequest } from "../../services/auth/authService";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Atomic from "../../assets/images/CirculoBenef.png"
+import Atomic from "../../assets/Logo/AtomicCirculo.png"
 
 
 export default function SignUpForm() {

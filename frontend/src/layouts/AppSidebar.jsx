@@ -10,6 +10,10 @@ import {
   FiGrid,        // Inicio
   FiZap          // Mis hábitos
 } from "react-icons/fi";
+import LogoAtom from '../assets/images/AN.png'
+import LogoAtom2 from '../assets/images/AW.png'
+import circle from '../assets/images/AtomicCirculo.png'
+
 
 import { useSidebar } from "../context/SidebarContext";
 
@@ -216,14 +220,14 @@ const AppSidebar = () => {
             <>
               <img
                 className="dark:hidden"
-                src="src/assets/images/AN.png"
+                src={LogoAtom}
                 alt="Logo"
                 width={190}
                 height={50}
               />
               <img
                 className="hidden dark:block"
-                src="src/assets/images/AW.png"
+                src={LogoAtom2}
                 alt="Logo"
                 width={190}
                 height={50}
@@ -231,7 +235,7 @@ const AppSidebar = () => {
             </>
           ) : (
             <img
-              src="src/assets/images/AtomicCirculo.png"
+              src={circle}
               alt="Logo"
               width={46}
               height={46}

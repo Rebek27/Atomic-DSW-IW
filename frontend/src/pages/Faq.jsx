@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FaQuestionCircle } from "react-icons/fa";
+import Fondito from '../assets/images/FondoFaq.png'
 
 const Faq = () => {
     const [openIndex, setOpenIndex] = useState(null);
@@ -31,8 +32,7 @@ const Faq = () => {
 
                 {/* Fondo decorativo */}
                 <img
-                    src=
-                    "src\assets/images/FondoFaq.png"
+                    src={Fondito}
                     alt="Fondo decorativo FAQ"
                     className="absolute inset-0 w-full h-full  opacity-90 pointer-events-none select-none"
                 />
