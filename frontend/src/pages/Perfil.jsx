@@ -45,7 +45,7 @@ const Perfil = () => {
   // Cambiar imagen del avatar
   const handleAvatarChange = async (avatarFile) => {
     try {
-      await cambiarImagen({ correo: user.correo, imagen: `src/assets/profile/${avatarFile}` });
+      await cambiarImagen({ correo: user.correo, imagen: {avatarFile} });
       setModalOpen(false);
       window.location.reload(); // o puedes actualizar el contexto si prefieres
     } catch (error) {
@@ -107,7 +107,7 @@ const Perfil = () => {
       <section className="bg-white rounded-xl shadow p-6 flex flex-col md:flex-row items-center justify-between">
         <div className="flex items-center space-x-4">
           <img
-            src={`/${user?.imagen}`}
+            src={`${user?.imagen}`}
             alt="Perfil Foto 1"
             className="w-20 h-20 rounded-full object-cover"
           />
