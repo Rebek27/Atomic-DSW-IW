@@ -4,6 +4,7 @@ import { getEventList } from '../services/events/eventServices';
 import { getTaskList } from '../services/tasks/taskService';
 import { useNavigate } from 'react-router-dom';
 import fondo from '../assets/images/Fondo1.png';
+import { avatarMap } from '../assets/profile/AvatarMap';
 
 const Home = () => {
   const { user } = useAuth();
@@ -89,7 +90,9 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Usuario */}
             <div className="bg-white/100 dark:bg-gray-800/90 rounded-xl shadow p-5 flex flex-col items-center text-center border">
-              <img src={`/${user?.imagen}`} alt="Avatar" className="w-24 h-24 rounded-full object-cover mb-4" />
+              <img
+               src={avatarMap[user?.imagen] || avatarMap['Perfil1.png']}
+               alt="User" className="w-24 h-24 rounded-full object-cover mb-4" />
               <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">{user?.nombreUsuario}</h3>
               <p className="text-gray-500 dark:text-gray-300">{user?.ocupacion}</p>
               <p className="text-gray-400 text-sm mt-1">{user?.correo}</p>
