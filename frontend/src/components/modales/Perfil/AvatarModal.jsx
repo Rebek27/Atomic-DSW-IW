@@ -24,7 +24,7 @@ const AvatarModal = ({ isOpen, onClose, onSelect }) => {
           {avatars.map((avatar) => (
             <img
               key={avatar}
-              src={`/src/assets/profile/${avatar}`}
+              src={`../../../assets/profile/${avatar}`}
               alt={avatar}
               className="w-20 h-20 rounded-full object-cover cursor-pointer hover:scale-105 transition-transform border-2 hover:border-blue-500"
               onClick={() => onSelect(avatar)}
