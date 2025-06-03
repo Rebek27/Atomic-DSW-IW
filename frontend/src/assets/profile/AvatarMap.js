@@ -1,10 +1,10 @@
 
-import avatar1 from '../assets/profile/Perfil1.png';
-import avatar2 from '../assets/profile/Perfil2.png';
-import avatar3 from '../assets/profile/Perfil3.png';
-import avatar4 from '../assets/profile/Perfil4.png';
-import avatar5 from '../assets/profile/Perfil5.png';
-import avatar6 from '../assets/profile/Perfil6.png';
+import avatar1 from './Perfil1.png';
+import avatar2 from './Perfil2.png';
+import avatar3 from './Perfil3.png';
+import avatar4 from './Perfil4.png';
+import avatar5 from './Perfil5.png';
+import avatar6 from './Perfil6.png';
 
 export const avatarMap = {
   'Perfil1.png': avatar1,
