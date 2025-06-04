@@ -4,7 +4,9 @@
 
 # AtomicRestAPI
 
-**Atomic** es una plataforma digital personal que permite **gestionar tareas y proyectos de manera eficiente**, mientras se **monitorean y registran los hábitos de bienestar y salud mental del usuario**, garantizando un entorno **seguro, privado y adaptado a sus necesidades cambiantes**.
+**Atomic** es una plataforma digital personal que permite **gestionar 📅 tareas y proyectos de manera eficiente**, mientras se **monitorean y registran los hábitos de bienestar ☑️ y salud mental del usuario**, garantizando un entorno **seguro, privado y adaptado a sus necesidades cambiantes**.
+
+
 
 ---
 
@@ -36,7 +38,7 @@ npm run dev
 
 ---
 
-## 👥 Integrantes
+## 👥 Integrantes ☑️
 
 - Acosta Carrillo Yvan Fernando  
 - Ramírez Velázquez Lía Rebeca  
@@ -45,7 +47,7 @@ npm run dev
 
 ---
 
-## 🎬 Video
+## 🎬 Video 
 
 👉 [Enlace al video aquí](#) <!-- Puedes reemplazar el # con el enlace a YouTube o Drive -->
 
