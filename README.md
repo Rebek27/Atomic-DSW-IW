@@ -2,7 +2,7 @@
   <img src="./frontend/src/assets/images/AtomicNegro.png" alt="Atomic Logo" width="400"/>
 </p>
 
-# AtomicRestAPI
+# Atomic Frontend
 
 **Atomic** es una plataforma digital personal que permite **gestionar 📅 tareas y proyectos de manera eficiente**, mientras se **monitorean y registran los hábitos de bienestar ☑️ y salud mental del usuario**, garantizando un entorno **seguro, privado y adaptado a sus necesidades cambiantes**.
 
